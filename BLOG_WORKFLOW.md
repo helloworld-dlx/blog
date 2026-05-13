@@ -49,9 +49,8 @@
 5. 不要修改其他文章。
 6. 不要编造事实。
 7. 运行 `npm run build`。
-8. build 通过后，执行安全提交和推送。
-9. 禁止 `git push --force`。
-10. 最后只汇报文章路径、build 结果、commit hash、push 结果。
+8. **不要 commit，不要 push**。
+9. 最后只汇报文章路径、build 结果。
 
 ### 用户发送"修改"时
 
