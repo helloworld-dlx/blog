@@ -9,7 +9,6 @@ interface Props {
 }
 
 const siteTitle = "dlx's Digital Lab";
-const siteUrl = 'https://dlx.example.com';
 const { title, description = '记录 IC 设计学习、一生一芯、Verilog、AI Agent 工作流和长期技术思考。' } = Astro.props;
 const pageTitle = title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
 ---
@@ -28,7 +27,15 @@ const pageTitle = title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
     <link rel="canonical" href={Astro.url} />
     <link rel="alternate" type="application/rss+xml" title={siteTitle} href="/rss.xml" />
     <title>{pageTitle}</title>
-    <script is:inline src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script is:inline>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        },
+      };
+    </script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/mathjax@3.3.2/es5/tex-svg.js" defer></script>
   </head>
   <body>
     <Header />
