@@ -32,6 +32,36 @@
 - 未经用户明确确认，不得将 `draft` 改为 `false`
 - 不得编造用户的经历、奖项、项目成果、论文、实习、芯片完成情况
 
+## Blog Publishing Rules
+
+1. 所有新文章必须先创建为 `draft: true`。
+2. 未经用户明确说"发布"，不得把 `draft` 改成 `false`。
+3. 新文章必须放在 `src/content/posts/`。
+4. 文件名使用 `yyyy-mm-dd-english-slug.md`。
+5. section 只能是 `lab`、`agent`、`mind`、`project`。
+6. tags 只能使用白名单：
+   `ysyx`, `riscv`, `verilog`, `debug`, `toolchain`, `linux`,
+   `agent`, `raspberry-pi`, `openclaw`, `hermes`,
+   `reading`, `essay`, `anti-involution`
+7. 不允许编造经历、比赛、实习、论文、奖项、项目完成状态。
+8. 不允许把未完成项目写成已完成。
+9. 不允许提交 `.env`、`token`、密钥、日志、数据库、`node_modules`、`dist`、`.astro`。
+10. 发布前必须运行 `npm run build`。
+11. 只有用户明确要求"提交并推送"时，才允许 `git commit` 和 `git push`。
+12. 禁止 `git push --force`。
+13. 每次修改后只汇报变更文件和 build 结果。
+
+## Blog Command Shortcuts
+
+本仓库支持以下短指令：
+- 构建草稿
+- 发布
+- 修改
+- 检查
+- 推送
+
+执行短指令时，必须优先遵守 `BLOG_WORKFLOW.md`。
+
 ## 安全规则
 
 - 不得提交 token、密码、聊天记录、隐私文件

@@ -2,10 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="作品集" description="项目、架构图、GitHub 链接与代表文章">
+<BaseLayout title="作品集" description="项目与成果图展示">
   <div class="page-header">
     <h1>作品集</h1>
-    <p>项目、架构图、GitHub 链接与代表文章。</p>
+    <p>项目与成果图展示。</p>
   </div>
 
   <section class="section">
@@ -20,9 +20,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 
   <section class="section">
-    <h2>架构图</h2>
-    <div class="card dashed">
-      <p>（待添加）</p>
+    <h2>成果图</h2>
+    <div class="card">
+      <h3>RISC-V 处理器仿真结构图</h3>
+      <p class="card-desc">基于 Logisim 仿真的 8 条指令迷你 RISC-V 处理器（minirv），最终可以打印出"一生一芯"图标。</p>
+      <img src="/portfolio-riscv-struct.png" alt="32位 RISC-V 处理器核心模块结构图" class="portfolio-img" />
     </div>
   </section>
 
@@ -33,16 +35,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <section class="section">
-    <h2>GitHub</h2>
-    <div class="card">
-      <h3>github.com/helloworld-dlx</h3>
-      <p class="card-desc">个人 GitHub 主页，目前主要维护 ysyx-prestudy 仓库。</p>
-      <a href="https://github.com/helloworld-dlx" target="_blank" rel="noopener" class="card-link">
-        → github.com/helloworld-dlx
-      </a>
-    </div>
-  </section>
+
 </BaseLayout>
 
 <style>
@@ -76,7 +69,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .card {
-    padding: 1.125rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
@@ -85,6 +80,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .card.dashed {
     border-style: dashed;
     text-align: center;
+    justify-content: center;
   }
 
   .card.dashed p {
@@ -103,16 +99,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 0.85rem;
     color: var(--color-text-muted);
     line-height: 1.6;
-    margin-bottom: 0.625rem;
+    margin-bottom: 0.75rem;
+    flex: 1;
   }
 
   .card-link {
     font-size: 0.85rem;
     color: var(--color-accent);
     text-decoration: none;
+    align-self: flex-start;
   }
 
   .card-link:hover {
     text-decoration: underline;
+  }
+
+  .portfolio-img {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    margin-top: 0.75rem;
   }
 </style>

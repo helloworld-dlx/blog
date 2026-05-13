@@ -13,7 +13,14 @@
   </p>
 
   {import.meta.env.PUBLIC_CUSDIS_APP_ID ? (
-    <div id="cusdis"></div>
+    <div
+      id="cusdis_thread"
+      data-host={import.meta.env.PUBLIC_CUSDIS_HOST || 'https://cusdis.com'}
+      data-app-id={import.meta.env.PUBLIC_CUSDIS_APP_ID}
+      data-page-id={Astro.url?.pathname || '/'}
+      data-page-url={Astro.url?.href || ''}
+      data-page-title={Astro.props?.title || ''}
+    ></div>
   ) : (
     <div class="comments-placeholder">
       <p>评论系统尚未配置。</p>
@@ -22,23 +29,7 @@
 </section>
 
 {import.meta.env.PUBLIC_CUSDIS_APP_ID && (
-  <script define:vars={{
-    appId: import.meta.env.PUBLIC_CUSDIS_APP_ID,
-    host: import.meta.env.PUBLIC_CUSDIS_HOST || 'https://cusdis.com',
-    pageId: Astro.url?.pathname || '/',
-    pageTitle: Astro.props?.title || ''
-  }}>
-    window.CUSDIS_CONFIG = {
-      appId: appId,
-      host: host,
-      pageId: pageId,
-      pageTitle: pageTitle,
-    };
-  </script>
-)}
-
-{import.meta.env.PUBLIC_CUSDIS_APP_ID && (
-  <script async src="https://cusdis.com/js/cusdis.js"></script>
+  <script is:inline src="https://cusdis.com/js/cusdis.es.js"></script>
 )}
 
 <style>
