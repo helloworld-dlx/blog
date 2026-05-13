@@ -24,7 +24,7 @@
 
 ### Tags（只允许以下 tags）
 
-`ysyx`, `riscv`, `verilog`, `debug`, `toolchain`, `linux`, `agent`, `raspberry-pi`, `openclaw`, `hermes`, `reading`, `essay`, `anti-involution`
+`ysyx`, `riscv`, `verilog`, `debug`, `toolchain`, `linux`, `agent`, `raspberry-pi`, `openclaw`, `hermes`, `reading`, `essay`, `anti-involution`, `digital-logic`
 
 ### 草稿规则
 
