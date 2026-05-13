@@ -231,6 +231,52 @@ article li {
 
 article pre {
   margin: 1rem 0;
+  overflow-x: auto;
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+article pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+article code {
+  font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+  background: var(--color-code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius);
+  font-size: 0.85em;
+}
+
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.875rem;
+}
+
+article table th {
+  background: var(--color-bg-subtle, #f0f2f5);
+  border: 1px solid var(--color-border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+article table td {
+  border: 1px solid var(--color-border);
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+}
+
+article table tr:nth-child(even) {
+  background: var(--color-bg-subtle, #f8f9fb);
 }
 
 article blockquote {
@@ -239,6 +285,10 @@ article blockquote {
   background: var(--color-code-bg);
   border-left: 3px solid var(--color-accent);
   border-radius: var(--radius);
+}
+
+article blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 600px) {
