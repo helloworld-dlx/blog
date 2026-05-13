@@ -148,6 +148,8 @@ $\text{Overflow} = C_{in\_MSB} \oplus C_{out\_MSB}$
 
 ### 交叉配对反相器(Cross-Coupled Inverters)
 
+![交叉配对反相器](https://gitee.com/helloworld-dlx/typora/raw/master/20260311153648764.png)
+
 #### 1. 核心结构（长什么样？）
 
 - 由 **两个反相器 (NOT Gate)** 组成。
@@ -175,6 +177,8 @@ $\text{Overflow} = C_{in\_MSB} \oplus C_{out\_MSB}$
 
 ### SR锁存器
 
+![SR锁存器](https://ysyx.oscc.cc/slides/2306/resources/img/tikz-images/aa8cfb24fd05163cd8be1d352bf2f44b1acb6043.png)
+
 Set（置位） Reset（复位）锁存器，其中S和R用于控制锁存器的状态
 
 **R (Reset)** 端：连接在 **Q** 输出的那一侧。
@@ -194,6 +198,8 @@ Set（置位） Reset（复位）锁存器，其中S和R用于控制锁存器的
 
 ### D锁存器
 
+![D锁存器](https://ysyx.oscc.cc/slides/2306/resources/img/tikz-images/0005c05d8b79336f931ac02bb927b87c82833c26.png)
+
 避免亚稳态
 
 D为输入数据
@@ -212,6 +218,8 @@ WE为写使能(Write Enable)
 | 1 | 1 | | 1 | 0 | | 1 |
 
 #### 用与非门搭建的D锁存器
+
+![与非门D锁存器](https://gitee.com/helloworld-dlx/typora/raw/master/20260127162807857.png)
 
 面积更小
 
@@ -259,9 +267,13 @@ WE有效时，输入的变化马上传播到输出
 
 锁存器属于电平触发(level-triggered)的存储元件, 只要输入发生变化, 锁存器就能立即感知, 并将该变化传播到输出端.
 
+![主从式D触发器](https://ysyx.oscc.cc/slides/2306/resources/img/tikz-images/9ab76d4a01bbe8d6031ccd52a10667193d756e31.png)
+
 相比之下, 我们需要一种边沿触发(edge-triggered)的存储元件, 只有信号边沿到来时, 才将输入传播到输出端
 
 ### D触发器(D Flip-Flop,DFF)
+
+![D触发器](https://ysyx.oscc.cc/slides/2306/resources/img/tikz-images/6bcf7eb766ced95806c75490f70ba9dc060ac43e.png)
 
 一种边沿触发的存储元件
 
@@ -294,6 +306,8 @@ WE有效时，输入的变化马上传播到输出
 D**触发器是同步电路设计中的基本存储元件**
 
 #### 带复位端的D触发器
+
+![带复位端D触发器](https://gitee.com/helloworld-dlx/typora/raw/master/20260128110016901.png)
 
 `resetn`为低电平有效的复位信号
 

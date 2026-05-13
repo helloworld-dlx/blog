@@ -28,6 +28,8 @@ featured: false
 
 pMOS 的功能表现与 nMOS 类似，$V_S - V_G$ 较大时导通，较小时截止。
 
+![nMOS 开关原理](https://ysyx.oscc.cc/slides/2306/resources/img/tikz-images/6f59f0809f5bd1e9065a0e3b2a41ee156cc10310.png)
+
 ### CMOS（Complementary MOS）
 
 nMOS + pMOS，用 MOS 管的开关特性实现 0 和 1：
@@ -36,6 +38,8 @@ nMOS + pMOS，用 MOS 管的开关特性实现 0 和 1：
 - 在 A 点加低电压时，下方的 n 管（nMOS）截止，上方的 p 管（pMOS）导通，相当于 Y 点与电源相连，Y 点电压高
 
 逻辑 `1`：高电平；逻辑 `0`：低电平。
+
+![CMOS 反相器](https://gitee.com/helloworld-dlx/typora/raw/master/20260123195444845.png)
 
 ## 通过晶体管搭建门电路
 
@@ -57,6 +61,8 @@ nMOS + pMOS，用 MOS 管的开关特性实现 0 和 1：
 | 0 | 1 | 1 |
 | 1 | 0 | 1 |
 | 1 | 1 | 0 |
+
+![与非门](https://gitee.com/helloworld-dlx/typora/raw/master/20260123200428768.png)
 
 ### 与运算（与门）
 
@@ -163,6 +169,8 @@ C 和 C' 为一对互补的控制信号：
 
 2-4 译码器：
 
+![2-4译码器](https://ysyx.oscc.cc/slides/2306/resources/img/tikz-images/cff133cf0330c0254c2f4d0997d4c66c487dbccc.png)
+
 | $A_1$ | $A_0$ | $Y_3$ | $Y_2$ | $Y_1$ | $Y_0$ |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | 0 | 0 | 0 | 0 | 0 | 1 |
@@ -198,6 +206,8 @@ C 和 C' 为一对互补的控制信号：
 根据选择端选择一路输入，将来对数据来源和处理结果进行选择。
 
 核心逻辑：与门是"守门员"，利用 `$A \cdot 0 = 0$`（强制清零）和 `$A \cdot 1 = A$`（原样通过）控制信号是否放行。1-2 译码器保证互斥，或门将两路信号安全合并。
+
+![多路选择器](https://ysyx.oscc.cc/slides/2306/resources/img/tikz-images/257e79181d040da7483b0f1fd8ffd648085fa471.png)
 
 #### 用传输门实现多路选择器
 
