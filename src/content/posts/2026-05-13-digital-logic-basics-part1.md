@@ -39,7 +39,7 @@ nMOS + pMOS，用 MOS 管的开关特性实现 0 和 1：
 
 逻辑 `1`：高电平；逻辑 `0`：低电平。
 
-![CMOS 反相器](https://gitee.com/helloworld-dlx/typora/raw/master/20260123195444845.png)
+![CMOS 反相器](/img/20260123195444845.png)
 
 ## 通过晶体管搭建门电路
 
@@ -62,7 +62,7 @@ nMOS + pMOS，用 MOS 管的开关特性实现 0 和 1：
 | 1 | 0 | 1 |
 | 1 | 1 | 0 |
 
-![与非门](https://gitee.com/helloworld-dlx/typora/raw/master/20260123200428768.png)
+![与非门](/img/20260123200428768.png)
 
 ### 与运算（与门）
 

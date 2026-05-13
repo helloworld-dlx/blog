@@ -148,7 +148,7 @@ $\text{Overflow} = C_{in\_MSB} \oplus C_{out\_MSB}$
 
 ### 交叉配对反相器(Cross-Coupled Inverters)
 
-![交叉配对反相器](https://gitee.com/helloworld-dlx/typora/raw/master/20260311153648764.png)
+![交叉配对反相器](/img/20260311153648764.png)
 
 #### 1. 核心结构（长什么样？）
 
@@ -198,7 +198,7 @@ Set（置位） Reset（复位）锁存器，其中S和R用于控制锁存器的
 
 ### D锁存器
 
-![D锁存器](https://ysyx.oscc.cc/slides/2306/resources/img/tikz-images/0005c05d8b79336f931ac02bb927b87c82833c26.png)
+![D锁存器](/img/20260127162807857.png)
 
 避免亚稳态
 
@@ -219,7 +219,7 @@ WE为写使能(Write Enable)
 
 #### 用与非门搭建的D锁存器
 
-![与非门D锁存器](https://gitee.com/helloworld-dlx/typora/raw/master/20260127162807857.png)
+![与非门D锁存器](/img/20260127162807857.png)
 
 面积更小
 
@@ -307,7 +307,7 @@ D**触发器是同步电路设计中的基本存储元件**
 
 #### 带复位端的D触发器
 
-![带复位端D触发器](https://gitee.com/helloworld-dlx/typora/raw/master/20260128110016901.png)
+![带复位端D触发器](/img/20260128110016901.png)
 
 `resetn`为低电平有效的复位信号
 
