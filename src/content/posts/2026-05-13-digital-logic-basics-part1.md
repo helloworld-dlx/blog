@@ -8,8 +8,6 @@ tags: [ysyx, digital-logic]
 featured: false
 ---
 
-数字逻辑电路基础（上）
-
 ## 通过晶体管实现 0 和 1
 
 金属-氧化物-半导体场效应晶体管（MOSFET）。

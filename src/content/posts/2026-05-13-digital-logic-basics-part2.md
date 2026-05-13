@@ -8,8 +8,6 @@ tags: [ysyx, digital-logic]
 featured: false
 ---
 
-# F3 数字逻辑电路基础（下）
-
 ## 整数的机器级表示
 
 ### 无符号数和有符号数
