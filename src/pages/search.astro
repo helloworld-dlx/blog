@@ -1,0 +1,146 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const allPosts = await getCollection('posts');
+const publishedPosts = allPosts
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const searchData = publishedPosts.map(post => ({
+  id: post.id,
+  title: post.data.title,
+  description: post.data.description,
+  tags: post.data.tags,
+  date: post.data.date.toISOString(),
+}));
+---
+
+<BaseLayout title="搜索" description="搜索文章">
+  <h1>搜索</h1>
+
+  <div class="search-box">
+    <input
+      type="search"
+      id="search-input"
+      placeholder="搜索标题、描述或标签..."
+      autocomplete="off"
+    />
+  </div>
+
+  <div id="results"></div>
+
+  <script define:vars={{ searchData }}>
+    const input = document.getElementById('search-input');
+    const results = document.getElementById('results');
+
+    function search(query) {
+      if (!query.trim()) {
+        results.innerHTML = '';
+        return;
+      }
+
+      const q = query.toLowerCase();
+      const matched = searchData.filter(post =>
+        post.title.toLowerCase().includes(q) ||
+        post.description.toLowerCase().includes(q) ||
+        post.tags.some(tag => tag.toLowerCase().includes(q))
+      );
+
+      if (matched.length === 0) {
+        results.innerHTML = '<p>未找到结果。</p>';
+        return;
+      }
+
+      results.innerHTML = matched.map(post => `
+        <li>
+          <a href="/posts/${post.id}">
+            <h2>${post.title}</h2>
+          </a>
+          <p><time>${new Date(post.date).toLocaleDateString('zh-CN')}</time></p>
+          <p>${post.description}</p>
+          <ul>${post.tags.map(tag => `<li>${tag}</li>`).join('')}</ul>
+        </li>
+      `).join('');
+    }
+
+    input.addEventListener('input', e => search(e.target.value));
+  </script>
+</BaseLayout>
+
+<style>
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-box {
+    margin-bottom: 1.5rem;
+  }
+
+  input[type="search"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  input[type="search"]:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a:hover h2 {
+    color: var(--color-accent);
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  li ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+  }
+
+  li ul li {
+    border-bottom: none;
+    padding: 0;
+    font-size: 0.75rem;
+    background: var(--color-border);
+    border-radius: 3px;
+    padding: 0.1rem 0.4rem;
+  }
+</style>

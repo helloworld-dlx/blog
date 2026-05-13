@@ -1,0 +1,78 @@
+---
+const navLinks = [
+  { label: '首页', href: '/' },
+  { label: '实验手记', href: '/lab' },
+  { label: 'AI 工坊', href: '/agent' },
+  { label: '随想录', href: '/mind' },
+  { label: '作品集', href: '/portfolio' },
+  { label: '关于', href: '/about' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header>
+  <div class="container">
+    <nav>
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class={currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href)) ? 'active' : ''}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0 1.25rem;
+    align-items: center;
+    height: var(--nav-height);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  a {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    padding: 0.2rem 0;
+    white-space: nowrap;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  a:hover,
+  a.active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 600px) {
+    nav {
+      gap: 0 1rem;
+    }
+
+    a {
+      font-size: 0.875rem;
+    }
+  }
+</style>

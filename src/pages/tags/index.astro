@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const allPosts = await getCollection('posts');
+const publishedPosts = allPosts.filter(post => !post.data.draft);
+
+const allTags = [
+  'ysyx', 'riscv', 'verilog', 'debug', 'toolchain', 'linux',
+  'agent', 'raspberry-pi', 'openclaw', 'hermes',
+  'reading', 'essay', 'anti-involution'
+];
+
+const tagCounts = allTags.reduce((acc, tag) => {
+  acc[tag] = publishedPosts.filter(post => post.data.tags.includes(tag)).length;
+  return acc;
+}, {} as Record<string, number>);
+---
+
+<BaseLayout title="标签" description="全部标签">
+  <h1>标签</h1>
+
+  <ul class="tags">
+    {allTags.map(tag => (
+      tagCounts[tag] > 0 && (
+        <li>
+          <a href={`/tags/${tag}`}>
+            {tag} <span>({tagCounts[tag]})</span>
+          </a>
+        </li>
+      )
+    ))}
+  </ul>
+</BaseLayout>
+
+<style>
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+  }
+
+  .tags li {
+    margin: 0;
+  }
+
+  .tags a {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .tags a:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .tags span {
+    color: var(--color-muted);
+  }
+</style>

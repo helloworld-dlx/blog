@@ -1,0 +1,79 @@
+---
+// Comments.astro
+// Cusdis 轻量评论系统
+// 配置通过环境变量读取：PUBLIC_CUSDIS_APP_ID、PUBLIC_CUSDIS_HOST
+// appId: 在 https://cusdis.com 注册并创建项目后获取
+// host: 默认为 https://cusdis.com，自托管时填入你的服务地址
+---
+
+<section class="comments">
+  <h2>交流与留言</h2>
+  <p class="comments-hint">
+    这里使用无需登录的轻量评论系统。你可以留下问题、反馈、勘误或交流想法。
+  </p>
+
+  {import.meta.env.PUBLIC_CUSDIS_APP_ID ? (
+    <div id="cusdis"></div>
+  ) : (
+    <div class="comments-placeholder">
+      <p>评论系统尚未配置。</p>
+    </div>
+  )}
+</section>
+
+{import.meta.env.PUBLIC_CUSDIS_APP_ID && (
+  <script define:vars={{
+    appId: import.meta.env.PUBLIC_CUSDIS_APP_ID,
+    host: import.meta.env.PUBLIC_CUSDIS_HOST || 'https://cusdis.com',
+    pageId: Astro.url?.pathname || '/',
+    pageTitle: Astro.props?.title || ''
+  }}>
+    window.CUSDIS_CONFIG = {
+      appId: appId,
+      host: host,
+      pageId: pageId,
+      pageTitle: pageTitle,
+    };
+  </script>
+)}
+
+{import.meta.env.PUBLIC_CUSDIS_APP_ID && (
+  <script async src="https://cusdis.com/js/cusdis.js"></script>
+)}
+
+<style>
+  .comments {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.875rem;
+    color: var(--color-text);
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--color-accent);
+  }
+
+  .comments-hint {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .comments-placeholder {
+    padding: 1.5rem;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+
+  .comments-placeholder p {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+  }
+</style>

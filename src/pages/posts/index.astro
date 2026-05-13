@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const allPosts = await getCollection('posts');
+const posts = allPosts
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="全部文章" description="全部文章列表">
+  <h1>全部文章</h1>
+
+  {posts.length === 0 ? (
+    <p>暂无文章。</p>
+  ) : (
+    <ul>
+      {posts.map(post => (
+        <li>
+          <a href={`/posts/${post.id}`}>
+            <h2>{post.data.title}</h2>
+          </a>
+          <p><time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('zh-CN')}</time></p>
+          <p>{post.data.description}</p>
+          <ul>
+            {post.data.tags.map(tag => <li>{tag}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

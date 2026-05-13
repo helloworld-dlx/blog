@@ -1,0 +1,208 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const allPosts = await getCollection('posts');
+const featuredPosts = allPosts
+  .filter(post => post.data.featured && !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="dlx's Digital Lab">
+  <section class="hero">
+    <h1>dlx 的数字实验室</h1>
+    <p class="tagline">大一 IC 设计学生</p>
+    <p class="focus">正在推进一生一芯、Verilog、计算机系统</p>
+    <p class="focus">正在构建 AI Agent 生产力系统</p>
+  </section>
+
+  <section class="主线">
+    <h2>当前主线</h2>
+    <div class="grid">
+      <div>
+        <p>一生一芯 / RISC-V / Verilog</p>
+      </div>
+      <div>
+        <p>OpenClaw / Hermes / Raspberry Pi</p>
+      </div>
+      <div>
+        <p>技术写作与日常思考</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="栏目入口">
+    <h2>栏目</h2>
+    <div class="grid">
+      <a href="/lab" class="card nav-card">
+        <h3>实验手记</h3>
+        <p>一生一芯、体系结构、Verilog、Linux、工具链</p>
+      </a>
+      <a href="/agent" class="card nav-card">
+        <h3>AI 工坊</h3>
+        <p>OpenClaw、Hermes、树莓派</p>
+      </a>
+      <a href="/mind" class="card nav-card">
+        <h3>随想录</h3>
+        <p>读书、技术哲学、学习方法</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="portfolio">
+    <a href="/portfolio">
+      <h3>→ 作品集</h3>
+    </a>
+  </section>
+
+  {featuredPosts.length > 0 && (
+    <section class="featured">
+      <h2>精选文章</h2>
+      <ul class="post-list">
+        {featuredPosts.map(post => (
+          <li>
+            <a href={`/posts/${post.id}`}>
+              <h2>{post.data.title}</h2>
+            </a>
+            <p>{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2.5rem;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .tagline {
+    font-size: 1.05rem;
+    color: var(--color-accent);
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+  }
+
+  .focus {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  section {
+    margin-bottom: 2.5rem;
+  }
+
+  h2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.875rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    background: var(--color-surface);
+  }
+
+  .nav-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .nav-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(74, 125, 155, 0.08);
+  }
+
+  .nav-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .nav-card p {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .grid > div p {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .portfolio {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+  }
+
+  .portfolio a {
+    text-decoration: none;
+    color: var(--color-accent);
+    font-size: 0.95rem;
+  }
+
+  .portfolio a:hover {
+    text-decoration: underline;
+  }
+
+  .featured .post-list {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .featured .post-list li {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .featured .post-list li:last-child {
+    border-bottom: none;
+  }
+
+  .featured .post-list h2 {
+    font-size: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .featured .post-list a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .featured .post-list a:hover h2 {
+    color: var(--color-accent);
+  }
+
+  .featured .post-list p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="作品集" description="项目、架构图、GitHub 链接与代表文章">
+  <div class="page-header">
+    <h1>作品集</h1>
+    <p>项目、架构图、GitHub 链接与代表文章。</p>
+  </div>
+
+  <section class="section">
+    <h2>代表项目</h2>
+    <div class="card">
+      <h3>ysyx-prestudy</h3>
+      <p class="card-desc">一生一芯预学习阶段的学习记录与代码仓库，包含 C 语言手搓的 RISC-V 指令集模拟器（minirvEMU）以及 Verilog RTL 实现探索。</p>
+      <a href="https://github.com/helloworld-dlx/ysyx-prestudy" target="_blank" rel="noopener" class="card-link">
+        → github.com/helloworld-dlx/ysyx-prestudy
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>架构图</h2>
+    <div class="card dashed">
+      <p>（待添加）</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>代表文章</h2>
+    <div class="card dashed">
+      <p>（待添加）</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>GitHub</h2>
+    <div class="card">
+      <h3>github.com/helloworld-dlx</h3>
+      <p class="card-desc">个人 GitHub 主页，目前主要维护 ysyx-prestudy 仓库。</p>
+      <a href="https://github.com/helloworld-dlx" target="_blank" rel="noopener" class="card-link">
+        → github.com/helloworld-dlx
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .page-header p {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .section {
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.875rem;
+  }
+
+  .card {
+    padding: 1.125rem 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .card.dashed {
+    border-style: dashed;
+    text-align: center;
+  }
+
+  .card.dashed p {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 0.625rem;
+  }
+
+  .card-link {
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .card-link:hover {
+    text-decoration: underline;
+  }
+</style>

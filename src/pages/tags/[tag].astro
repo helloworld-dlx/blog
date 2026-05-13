@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('posts');
+  const publishedPosts = allPosts.filter(post => !post.data.draft);
+
+  const allTags = [
+    'ysyx', 'riscv', 'verilog', 'debug', 'toolchain', 'linux',
+    'agent', 'raspberry-pi', 'openclaw', 'hermes',
+    'reading', 'essay', 'anti-involution'
+  ];
+
+  return allTags.map(tag => ({
+    params: { tag },
+    props: {
+      posts: publishedPosts
+        .filter(post => post.data.tags.includes(tag))
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+    },
+  }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<BaseLayout title={`标签: ${tag}`} description={`标签 ${tag} 下的文章`}>
+  <h1>标签: {tag}</h1>
+
+  {posts.length === 0 ? (
+    <p>暂无文章。</p>
+  ) : (
+    <ul>
+      {posts.map(post => (
+        <li>
+          <a href={`/posts/${post.id}`}>
+            <h2>{post.data.title}</h2>
+          </a>
+          <p><time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('zh-CN')}</time></p>
+          <p>{post.data.description}</p>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  <p><a href="/tags">← 全部标签</a></p>
+</BaseLayout>
