@@ -48,6 +48,7 @@
 9. 不允许提交 `.env`、`token`、密钥、日志、数据库、`node_modules`、`dist`、`.astro`。
 10. 发布前必须运行 `npm run build`。
 11. 只有用户明确要求"提交并推送"时，才允许 `git commit` 和 `git push`。
+12. 每次 `git commit` 必须使用 `-m "简短描述本次提交内容"`，不得使用无 message 的空 commit。
 12. 禁止 `git push --force`。
 13. 每次修改后只汇报变更文件和 build 结果。
 
