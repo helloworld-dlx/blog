@@ -54,39 +54,16 @@ const searchData = publishedPosts.map(post => ({
 
     function renderPosts(posts) {
       if (posts.length === 0) {
-        results.innerHTML = `
-          <div class="empty-state">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            <p>没有找到匹配的文章</p>
-          </div>`;
+        results.innerHTML = '<div class="empty-state"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>没有找到匹配的文章</p></div>';
         return;
       }
-      results.innerHTML = '<div class="results-grid">' + posts.map(post => `
-        <a href="/posts/${post.id}" class="result-card">
-          <div class="card-header">
-            <span class="card-date">${new Date(post.date).toLocaleDateString('zh-CN')}</span>
-          </div>
-          <h3 class="card-title">${escapeHtml(post.title)}</h3>
-          <p class="card-desc">${escapeHtml(post.description)}</p>
-          <div class="card-tags">${post.tags.map(t => `<span>#${escapeHtml(t)}</span>`).join('')}</div>
-        </a>
-      `).join('') + '</div>';
+      const html = '<div class="results-grid">' + posts.map(post => '<a href="/posts/' + post.id + '" class="result-card"><div class="card-header"><span class="card-date">' + new Date(post.date).toLocaleDateString('zh-CN') + '</span></div><h3 class="card-title">' + escapeHtml(post.title) + '</h3><p class="card-desc">' + escapeHtml(post.description) + '</p><div class="card-tags">' + post.tags.map(t => '<span>#' + escapeHtml(t) + '</span>').join('') + '</div></a>').join('') + '</div>';
+      results.innerHTML = html;
     }
 
     function search(query) {
       if (!query.trim()) {
-        results.innerHTML = `
-          <div class="empty-state">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="11" cy="11" r="8"/>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-            <p>输入关键词开始搜索</p>
-          </div>`;
+        results.innerHTML = '<div class="empty-state"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>输入关键词开始搜索</p></div>';
         return;
       }
       const q = query.toLowerCase();
@@ -102,7 +79,7 @@ const searchData = publishedPosts.map(post => ({
   </script>
 </BaseLayout>
 
-<style>
+<style is:global>
   .search-page {
     padding-top: 0.5rem;
   }
@@ -112,7 +89,7 @@ const searchData = publishedPosts.map(post => ({
     margin-bottom: 2rem;
   }
 
-  .search-icon {
+  .search-input-wrap .search-icon {
     position: absolute;
     left: 0.875rem;
     top: 50%;
@@ -121,7 +98,7 @@ const searchData = publishedPosts.map(post => ({
     pointer-events: none;
   }
 
-  input[type="search"] {
+  .search-input-wrap input[type="search"] {
     width: 100%;
     padding: 0.875rem 1rem 0.875rem 3rem;
     font-size: 1rem;
@@ -130,15 +107,16 @@ const searchData = publishedPosts.map(post => ({
     background: var(--color-surface);
     color: var(--color-text);
     transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
   }
 
-  input[type="search"]:focus {
+  .search-input-wrap input[type="search"]:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(74, 125, 155, 0.1);
+    box-shadow: 0 0 0 3px rgba(74, 125, 155, 0.15);
   }
 
-  input[type="search"]::placeholder {
+  .search-input-wrap input[type="search"]::placeholder {
     color: var(--color-text-muted);
   }
 
@@ -162,6 +140,7 @@ const searchData = publishedPosts.map(post => ({
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.75rem;
+    width: 100%;
   }
 
   @media (min-width: 640px) {
@@ -181,12 +160,12 @@ const searchData = publishedPosts.map(post => ({
     text-decoration: none;
     color: inherit;
     transition: all 0.2s ease;
-    -webkit-transform: translateZ(0);
+    box-sizing: border-box;
   }
 
   .result-card:hover {
     border-color: var(--color-accent);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
   }
 
