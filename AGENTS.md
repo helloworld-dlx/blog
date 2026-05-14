@@ -9,7 +9,7 @@
 - Home /
 - Lab Notes /lab
 - 通识基础 /study
-- Mind Palace /mind
+- 随想录 /mind
 - Portfolio /portfolio
 - About /about
 
@@ -23,7 +23,7 @@
 
 放高数、线代、英语、大学课程笔记、课堂心得、阶段成果、复习总结。
 
-### Mind Palace（/mind）
+### 随想录（/mind）
 
 放读书、技术哲学、反卷决策、学习方法和个人思考。
 
@@ -37,7 +37,7 @@
 
 - `lab` — Lab Notes 分区
 - `study` — 通识基础 分区
-- `mind` — Mind Palace 分区
+- `mind` — 随想录 分区
 - `project` — Portfolio 分区
 
 ### Tags（只允许以下 tags）
