@@ -13,80 +13,93 @@ const searchData = publishedPosts.map(post => ({
   description: post.data.description,
   tags: post.data.tags,
   date: post.data.date.toISOString(),
+  section: post.data.section,
 }));
 ---
 
 <BaseLayout title="搜索" description="搜索文章">
-  <h1>搜索</h1>
+  <div class="search-page">
+    <div class="search-input-wrap">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input
+        type="search"
+        id="search-input"
+        placeholder="搜索..."
+        autocomplete="off"
+      />
+    </div>
 
-  <div class="search-box">
-    <input
-      type="search"
-      id="search-input"
-      placeholder="搜索标题、描述或标签..."
-      autocomplete="off"
-    />
+    <div id="results"></div>
   </div>
-
-  <div id="results"></div>
 
   <script define:vars={{ searchData }}>
     const input = document.getElementById('search-input');
     const results = document.getElementById('results');
 
-    function search(query) {
-      if (!query.trim()) {
-        results.innerHTML = '';
+    function renderPosts(posts) {
+      if (posts.length === 0) {
+        results.innerHTML = '<div class="no-results">未找到结果</div>';
         return;
       }
+      results.innerHTML = '<div class="results-grid">' + posts.map(post => `
+        <a href="/posts/${post.id}" class="result-item">
+          <div class="result-date">${new Date(post.date).toLocaleDateString('zh-CN')}</div>
+          <div class="result-title">${post.title}</div>
+          <div class="result-tags">${post.tags.map(t => `<span>${t}</span>`).join('')}</div>
+        </a>
+      `).join('') + '</div>';
+    }
 
+    function search(query) {
+      if (!query.trim()) {
+        renderPosts(searchData);
+        return;
+      }
       const q = query.toLowerCase();
       const matched = searchData.filter(post =>
         post.title.toLowerCase().includes(q) ||
         post.description.toLowerCase().includes(q) ||
         post.tags.some(tag => tag.toLowerCase().includes(q))
       );
-
-      if (matched.length === 0) {
-        results.innerHTML = '<p>未找到结果。</p>';
-        return;
-      }
-
-      results.innerHTML = matched.map(post => `
-        <li>
-          <a href="/posts/${post.id}">
-            <h2>${post.title}</h2>
-          </a>
-          <p><time>${new Date(post.date).toLocaleDateString('zh-CN')}</time></p>
-          <p>${post.description}</p>
-          <ul>${post.tags.map(tag => `<li>${tag}</li>`).join('')}</ul>
-        </li>
-      `).join('');
+      renderPosts(matched);
     }
 
+    renderPosts(searchData);
     input.addEventListener('input', e => search(e.target.value));
   </script>
 </BaseLayout>
 
 <style>
-  h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
+  .search-page {
+    padding-top: 0.5rem;
   }
 
-  .search-box {
-    margin-bottom: 1.5rem;
+  .search-input-wrap {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
   }
 
   input[type="search"] {
     width: 100%;
-    max-width: 400px;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.875rem 0.75rem 2.75rem;
     font-size: 1rem;
     border: 1px solid var(--color-border);
-    border-radius: 6px;
-    background: var(--color-bg);
+    border-radius: 8px;
+    background: var(--color-surface);
     color: var(--color-text);
+    transition: border-color 0.15s;
   }
 
   input[type="search"]:focus {
@@ -94,53 +107,67 @@ const searchData = publishedPosts.map(post => ({
     border-color: var(--color-accent);
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
+  input[type="search"]::placeholder {
+    color: var(--color-text-muted);
   }
 
-  li {
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--color-border);
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.75rem;
   }
 
-  li:last-child {
-    border-bottom: none;
-  }
-
-  a {
+  .result-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0.875rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
     text-decoration: none;
     color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
 
-  a:hover h2 {
-    color: var(--color-accent);
+  .result-item:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(74, 125, 155, 0.08);
   }
 
-  h2 {
-    font-size: 1.1rem;
-    margin-bottom: 0.25rem;
+  .result-date {
+    font-size: 0.725rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.375rem;
   }
 
-  p {
-    font-size: 0.875rem;
-    color: var(--color-muted);
-    margin-bottom: 0.25rem;
+  .result-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
   }
 
-  li ul {
+  .result-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem;
-    margin-top: 0.5rem;
+    margin-top: auto;
   }
 
-  li ul li {
-    border-bottom: none;
-    padding: 0;
-    font-size: 0.75rem;
-    background: var(--color-border);
-    border-radius: 3px;
+  .result-tags span {
+    font-size: 0.7rem;
     padding: 0.1rem 0.4rem;
+    background: var(--color-bg-subtle, #f0f2f5);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    color: var(--color-text-muted);
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
   }
 </style>
