@@ -3,7 +3,7 @@ title: OpenClaw 与 Hermes 树莓派部署记录
 date: 2024-01-05
 description: 在树莓派上部署 OpenClaw 与 Hermes 的过程记录
 draft: true
-section: agent
+section: lab
 tags:
   - openclaw
   - hermes

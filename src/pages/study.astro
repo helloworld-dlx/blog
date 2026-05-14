@@ -4,14 +4,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const allPosts = await getCollection('posts');
 const posts = allPosts
-  .filter(post => post.data.section === 'lab' && !post.data.draft)
+  .filter(post => post.data.section === 'study' && !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<BaseLayout title="实验手记" description="一生一芯、计算机体系结构、Verilog、Linux、工具链、OpenClaw、Hermes、树莓派与自动化工作流">
+<BaseLayout title="通识基础" description="高数、线代、英语、大学课程笔记、课堂心得、阶段成果与复习总结">
   <div class="page-header">
-    <h1>实验手记</h1>
-    <p>一生一芯、计算机体系结构、Verilog、Linux、工具链、OpenClaw、Hermes、树莓派与自动化工作流折腾记录。</p>
+    <h1>通识基础</h1>
+    <p>高数、线代、英语、大学课程笔记、课堂心得、阶段成果与复习总结。</p>
   </div>
 
   {posts.length === 0 ? (

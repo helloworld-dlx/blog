@@ -3,7 +3,7 @@ title: 我的 AI Agent 生产力系统设想
 date: 2024-01-07
 description: 对 AI Agent 辅助个人生产力系统的思考与规划
 draft: true
-section: agent
+section: lab
 tags:
   - agent
 featured: false

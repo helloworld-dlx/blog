@@ -3,7 +3,7 @@ title: 飞书机器人工作流记录
 date: 2024-01-06
 description: 使用飞书机器人搭建自动化工作流的实践记录
 draft: true
-section: agent
+section: lab
 tags:
   - agent
 featured: false
