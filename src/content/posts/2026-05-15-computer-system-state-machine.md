@@ -8,7 +8,6 @@ section: lab
 featured: false
 ---
 
-# F4 计算机系统的状态机模型
 
 ## 处理器的组成和工作原理
 

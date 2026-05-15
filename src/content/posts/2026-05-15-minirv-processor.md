@@ -8,7 +8,6 @@ section: lab
 featured: false
 ---
 
-# F6 功能完备的迷你RISC-V处理器
 
 ## 迷你RISC-V指令集
 

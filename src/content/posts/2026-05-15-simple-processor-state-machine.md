@@ -8,7 +8,6 @@ section: lab
 featured: false
 ---
 
-# F5 支持数列求和的简单处理器
 
 ## 只有一条指令的CPU
 
