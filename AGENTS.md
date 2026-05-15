@@ -47,6 +47,7 @@
 课业标签：`math`, `calculus`, `linear-algebra`, `english`, `course-notes`, `exam-review`
 
 思想标签：`reading`, `essay`, `anti-involution`
+其他标签：`logisim`
 
 ### 草稿规则
 
@@ -105,12 +106,12 @@
 
 ### 用户发送"构建草稿"时
 
-1. 将用户提供的原始内容整理为一篇 Astro 博客草稿。
-2. 新文章放到 `src/content/posts/`。
-3. 文件名使用 `yyyy-mm-dd-english-slug.md`。
+1. 直接使用用户提供的原文 markdown 内容，不做任何改写或润色。
+2. 检查文章正文是否有 H1 标题（以 `# ` 开头的行），如果与 frontmatter 的 title 重复，则删去该 H1 行（只保留一份）。
+3. 新文章放到 `src/content/posts/`。
 4. frontmatter 必须包含：
    - title
-   - date
+   - date（使用当天日期，格式 YYYY-MM-DD 或带时间如 YYYY-MM-DDTHH:MM:SS）
    - description
    - draft: true
    - section
@@ -126,11 +127,10 @@
    - agent, raspberry-pi, openclaw, hermes, digital-logic
    - math, calculus, linear-algebra, english, course-notes, exam-review
    - reading, essay, anti-involution
-7. 保留用户真实语气，可以润色结构，但不得编造事实。
-8. 技术细节不确定时写 TODO，不要硬编。
-9. 不要发布，不要 commit，不要 push。
-10. 修改后运行 `npm run build`。
-11. 最后只汇报草稿路径、section、tags、build 结果。
+   - logisim
+7. 不要发布，不要 commit，不要 push。
+8. 修改后运行 `npm run build`。
+9. 最后只汇报草稿路径、section、建议 tags（供用户确认），以及 build 结果。
 
 ### 用户发送"发布"时
 

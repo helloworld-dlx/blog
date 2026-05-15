@@ -4,22 +4,30 @@
 
 ### 用户发送"构建草稿"时
 
-1. 将用户提供的原始内容整理为一篇 Astro 博客草稿。
-2. 新文章放到 `src/content/posts/`。
-3. frontmatter 必须包含：title, date, description, draft: true, section, tags, featured: false
-4. section 只能是：
+1. 直接使用用户提供的原文 markdown 内容，不做任何改写或润色。
+2. 检查文章正文是否有 H1 标题（以 `# ` 开头的行），如果与 frontmatter 的 title 重复，则删去该 H1 行（只保留一份）。
+3. 新文章放到 `src/content/posts/`。
+4. frontmatter 必须包含：
+   - title
+   - date（使用当天日期，格式 YYYY-MM-DD 或带时间如 YYYY-MM-DDTHH:MM:SS）
+   - description
+   - draft: true
+   - section
+   - tags
+   - featured: false
+5. section 只能是：
    - `lab` — 技术实验、OpenClaw、Hermes、树莓派、飞书机器人、本地模型、自动化工作流
    - `study` — 高数、线代、英语、大学课程笔记、课堂心得、阶段成果、复习总结
    - `mind` — 读书、技术哲学、反卷决策、学习方法、个人思考
    - `project` — 项目总结、作品集关联文章
-5. tags 只能从白名单选择：
+6. tags 只能从白名单选择：
    - `ysyx`, `riscv`, `verilog`, `debug`, `toolchain`, `linux`
    - `agent`, `raspberry-pi`, `openclaw`, `hermes`, `digital-logic`
    - `math`, `calculus`, `linear-algebra`, `english`, `course-notes`, `exam-review`
-   - `reading`, `essay`, `anti-involution`
-6. 不要发布，不要 commit，不要 push。
-7. 修改后运行 `npm run build`。
-8. 最后只汇报草稿路径、section、tags、build 结果。
+   - `reading`, `essay`, `anti-involution`, `logisim`
+7. 不要发布，不要 commit，不要 push。
+8. 修改后运行 `npm run build`。
+9. 最后只汇报草稿路径、section、建议 tags（供用户确认），以及 build 结果。
 
 ### 用户发送"发布"时
 
