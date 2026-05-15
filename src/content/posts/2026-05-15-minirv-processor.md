@@ -2,7 +2,7 @@
 title: "F6 功能完备的迷你RISC-V处理器"
 date: 2026-05-15
 description: "从两条指令到8条指令，构建完整的minirv处理器。涵盖取指、译码、执行、访存、内存映射I/O与VGA显示，以及现代处理器设计流程概述。"
-tags: ["ysyx", "riscv", "digital-logic"]
+tags: ["ysyx", "riscv", "digital-logic", "logisim"]
 draft: false
 section: lab
 featured: false
