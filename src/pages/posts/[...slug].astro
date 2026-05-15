@@ -16,14 +16,11 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 
-// Estimate reading time
 const wordCount = post.body.split(/\s+/).length;
 const readingTime = Math.ceil(wordCount / 200);
 
-// TOC: h2 and h3 only, skip if too few
 const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 
-// Format dates
 const publishDate = post.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
 const updatedDate = post.data.updated
   ? new Date(post.data.updated).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -44,9 +41,8 @@ const updatedDate = post.data.updated
       </ul>
     </header>
 
-    <div class="article-layout">
-      <div class="article-main">
-        <!-- Meta row -->
+    <div class="article-body">
+      <div class="article-content">
         <ul class="article-meta">
           <li>
             <span class="meta-label">📅</span>
@@ -68,25 +64,23 @@ const updatedDate = post.data.updated
             <span>{readingTime} 分钟</span>
           </li>
         </ul>
-
-        <!-- TOC sidebar: only show when enough headings -->
-        {tocHeadings.length > 1 && (
-          <aside class="toc-wrapper">
-            <p class="toc-title">目录</p>
-            <ul class="toc-list">
-              {tocHeadings.map(h => (
-                <li class={h.depth === 3 ? 'toc-h3' : ''}>
-                  <a href={`#${h.slug}`}>{h.text}</a>
-                </li>
-              ))}
-            </ul>
-          </aside>
-        )}
-
-        <div class="article-content">
+        <div class="article-text">
           <Content />
         </div>
       </div>
+
+      {tocHeadings.length > 1 && (
+        <aside class="toc-wrapper">
+          <p class="toc-title">目录</p>
+          <ul class="toc-list">
+            {tocHeadings.map(h => (
+              <li class={h.depth === 3 ? 'toc-h3' : ''}>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
     </div>
   </article>
 
@@ -137,21 +131,76 @@ const updatedDate = post.data.updated
     color: var(--color-accent);
   }
 
-  /* Article layout with optional sidebar TOC */
-  .article-layout {
-    max-width: 1100px;
+  /* Article body: content + TOC separated */
+  .article-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    position: relative;
+  }
+
+  /* TOC: fixed to right side of viewport */
+  .toc-wrapper {
+    position: fixed;
+    top: calc(var(--nav-height) + 2rem);
+    right: 2rem;
+    width: 200px;
+    max-height: calc(100vh - var(--nav-height) - 4rem);
+    overflow-y: auto;
+    font-size: 0.8rem;
+    z-index: 5;
+  }
+
+  .toc-title {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    opacity: 0.55;
+    margin: 0 0 0.6rem 0;
+    font-weight: 600;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .toc-list li {
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-list a {
+    display: block;
+    padding: 0.25rem 0 0.25rem 0.75rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    transition: color 0.15s, border-color 0.15s;
+    line-height: 1.45;
+  }
+
+  .toc-list a:hover {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+  }
+
+  .toc-list .toc-h3 a {
+    padding-left: 1.5rem;
+    font-size: 0.78rem;
+  }
+
+  /* Article content area */
+  .article-content {
+    max-width: 680px;
     margin: 0 auto;
   }
 
-  .article-body {
-    display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 2.5rem;
-    align-items: start;
-    min-width: 0;
-  }
-
-  /* Meta row */
+  /* Meta row within content */
   .article-meta {
     display: flex;
     flex-wrap: wrap;
@@ -186,66 +235,12 @@ const updatedDate = post.data.updated
     font-weight: 500;
   }
 
-  /* TOC sidebar */
-  .toc-wrapper {
-    position: sticky;
-    top: 2rem;
-    max-height: calc(100vh - 4rem);
-    overflow-y: auto;
-    font-size: 0.825rem;
-  }
-
-  .toc-title {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
-    opacity: 0.6;
-    margin: 0 0 0.75rem 0;
-    font-weight: 600;
-  }
-
-  .toc-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-left: 1px solid var(--color-border);
-  }
-
-  .toc-list li {
-    padding: 0;
-    margin: 0;
-  }
-
-  .toc-list a {
-    display: block;
-    padding: 0.3rem 0 0.3rem 0.75rem;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    border-left: 2px solid transparent;
-    margin-left: -1px;
-    transition: color 0.15s, border-color 0.15s;
-    line-height: 1.4;
-  }
-
-  .toc-list a:hover {
-    color: var(--color-accent);
-    border-left-color: var(--color-accent);
-  }
-
-  .toc-list .toc-h3 a {
-    padding-left: 1.5rem;
-    font-size: 0.8rem;
-  }
-
-  /* Article content */
-  .article-content {
+  /* Article text */
+  .article-text {
     line-height: 1.8;
-    min-width: 0;
-    max-width: 100%;
   }
 
-  .article-content :global(pre) {
+  .article-text :global(pre) {
     position: relative;
     background: var(--color-surface);
     border-radius: 8px;
@@ -254,39 +249,43 @@ const updatedDate = post.data.updated
     padding: 1rem;
   }
 
-  .article-content :global(code) {
+  .article-text :global(code) {
     font-size: 0.875rem;
   }
 
-  .article-content :global(pre code) {
+  .article-text :global(pre code) {
     background: none;
     padding: 0;
     border: none;
   }
 
-  .article-content :global(p code) {
+  .article-text :global(p code) {
     background: var(--color-surface);
     padding: 0.15em 0.4em;
     border-radius: 3px;
     font-size: 0.85em;
   }
 
-  /* Responsive: hide TOC on mobile */
-  @media (max-width: 768px) {
-    .article-main {
-      grid-template-columns: 1fr;
-    }
-
+  /* Responsive: hide TOC on small screens */
+  @media (max-width: 1100px) {
     .toc-wrapper {
       display: none;
+    }
+
+    .article-content {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .article-body {
+      grid-template-columns: 1fr;
     }
   }
 </style>
 
 <script>
-  // Copy button for code blocks — pure client-side, no dependencies
   document.querySelectorAll('pre').forEach(pre => {
-    // Wrap pre in a relative container
     const wrapper = document.createElement('div');
     wrapper.className = 'code-block-wrapper';
     pre.parentNode?.insertBefore(wrapper, pre);
