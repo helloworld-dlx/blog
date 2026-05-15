@@ -6,11 +6,8 @@ export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
   const publishedPosts = allPosts.filter(post => !post.data.draft);
 
-  const allTags = [
-    'ysyx', 'riscv', 'verilog', 'debug', 'toolchain', 'linux',
-    'agent', 'raspberry-pi', 'openclaw', 'hermes',
-    'reading', 'essay', 'anti-involution', 'digital-logic'
-  ];
+  // Dynamically collect all unique tags from published posts
+  const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
 
   return allTags.map(tag => ({
     params: { tag },
