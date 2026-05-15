@@ -14,7 +14,20 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+
+// Estimate reading time
+const wordCount = post.body.split(/\s+/).length;
+const readingTime = Math.ceil(wordCount / 200);
+
+// TOC: h2 and h3 only, skip if too few
+const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
+
+// Format dates
+const publishDate = post.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+const updatedDate = post.data.updated
+  ? new Date(post.data.updated).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
+  : null;
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
@@ -30,7 +43,51 @@ const { Content } = await render(post);
         ))}
       </ul>
     </header>
-    <Content />
+
+    <div class="article-layout">
+      <div class="article-main">
+        <!-- Meta row -->
+        <ul class="article-meta">
+          <li>
+            <span class="meta-label">📅</span>
+            <span>{publishDate}</span>
+          </li>
+          {updatedDate && (
+            <li>
+              <span class="meta-label">🔄</span>
+              <span>{updatedDate}</span>
+            </li>
+          )}
+          {post.data.section && (
+            <li>
+              <span class="section-badge">{post.data.section}</span>
+            </li>
+          )}
+          <li>
+            <span class="meta-label">⏱️</span>
+            <span>{readingTime} 分钟</span>
+          </li>
+        </ul>
+
+        <!-- TOC sidebar: only show when enough headings -->
+        {tocHeadings.length > 1 && (
+          <aside class="toc-wrapper">
+            <p class="toc-title">目录</p>
+            <ul class="toc-list">
+              {tocHeadings.map(h => (
+                <li class={h.depth === 3 ? 'toc-h3' : ''}>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )}
+
+        <div class="article-content">
+          <Content />
+        </div>
+      </div>
+    </div>
   </article>
 
   <Comments title={post.data.title} />
@@ -78,5 +135,218 @@ const { Content } = await render(post);
 
   .tag-list a:hover {
     color: var(--color-accent);
+  }
+
+  /* Article layout with optional sidebar TOC */
+  .article-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .article-main {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 3rem;
+    align-items: start;
+    min-width: 0;
+  }
+
+  /* Meta row */
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1rem;
+  }
+
+  .article-meta li {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .meta-label {
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  .section-badge {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: #e8f0fe;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #3c5a9e;
+    font-weight: 500;
+  }
+
+  /* TOC sidebar */
+  .toc-wrapper {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    font-size: 0.825rem;
+  }
+
+  .toc-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+    margin: 0 0 0.75rem 0;
+    font-weight: 600;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .toc-list li {
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-list a {
+    display: block;
+    padding: 0.3rem 0 0.3rem 0.75rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    transition: color 0.15s, border-color 0.15s;
+    line-height: 1.4;
+  }
+
+  .toc-list a:hover {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+  }
+
+  .toc-list .toc-h3 a {
+    padding-left: 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  /* Article content */
+  .article-content {
+    line-height: 1.8;
+    min-width: 0;
+  }
+
+  .article-content :global(pre) {
+    position: relative;
+    background: var(--color-surface);
+    border-radius: 8px;
+    overflow: auto;
+    border: 1px solid var(--color-border);
+    padding: 1rem;
+  }
+
+  .article-content :global(code) {
+    font-size: 0.875rem;
+  }
+
+  .article-content :global(pre code) {
+    background: none;
+    padding: 0;
+    border: none;
+  }
+
+  .article-content :global(p code) {
+    background: var(--color-surface);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.85em;
+  }
+
+  /* Responsive: hide TOC on mobile */
+  @media (max-width: 768px) {
+    .article-main {
+      grid-template-columns: 1fr;
+    }
+
+    .toc-wrapper {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Copy button for code blocks — pure client-side, no dependencies
+  document.querySelectorAll('pre').forEach(pre => {
+    // Wrap pre in a relative container
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+    pre.parentNode?.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = '复制';
+    btn.addEventListener('click', async () => {
+      const code = pre.querySelector('code');
+      const text = code ? code.innerText : pre.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = '已复制 ✓';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '复制';
+          btn.classList.remove('copied');
+        }, 2000);
+      } catch {
+        btn.textContent = '复制失败';
+      }
+    });
+    wrapper.appendChild(btn);
+  });
+</script>
+
+<style is:global>
+  .code-block-wrapper {
+    position: relative;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s;
+    z-index: 10;
+    color: #555;
+    font-family: inherit;
+  }
+
+  .code-block-wrapper:hover .copy-btn,
+  .copy-btn.show {
+    opacity: 1;
+  }
+
+  .copy-btn:hover {
+    background: #fff;
+    border-color: #999;
+  }
+
+  .copy-btn.copied {
+    color: #2a8a2a;
+    border-color: #2a8a2a;
   }
 </style>
