@@ -1,6 +1,6 @@
 ---
 title: "F4 计算机系统的状态机模型"
-date: 2026-05-15
+date: 2026-05-15T10:00:00
 description: "从处理器指令执行到ISA状态机、C程序状态机、数字电路状态机，贯穿整个计算机系统的状态机视角。"
 tags: ["ysyx", "riscv", "digital-logic"]
 draft: false

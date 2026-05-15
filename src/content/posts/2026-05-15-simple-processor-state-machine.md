@@ -1,6 +1,6 @@
 ---
 title: "F5 支持数列求和的简单处理器"
-date: 2026-05-15
+date: 2026-05-15T10:10:00
 description: "从一条li指令开始，逐步添加add和bner0指令，构建完整sCPU。理解取指、译码、执行、更新PC的数据通路与控制信号设计。"
 tags: ["ysyx", "logisim", "digital-logic"]
 draft: false
