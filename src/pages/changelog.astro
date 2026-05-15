@@ -25,7 +25,11 @@ const grouped = changelog.reduce<Record<string, typeof changelog>>((acc, entry) 
   return acc;
 }, {});
 
+// Sort months descending, entries within each month descending by date
 const months = Object.keys(grouped).sort().reverse();
+for (const month of months) {
+  grouped[month].sort((a, b) => b.date.localeCompare(a.date));
+}
 ---
 
 <BaseLayout title="Changelog" description="博客更新历史记录">
