@@ -28,6 +28,20 @@ const updatedDate = post.data.updated
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
+  <!-- TOC fixed to right, outside article flow -->
+  {tocHeadings.length > 1 && (
+    <nav class="toc-fixed">
+      <p class="toc-title">目录</p>
+      <ul class="toc-list">
+        {tocHeadings.map(h => (
+          <li class={h.depth === 3 ? 'toc-h3' : ''}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
+
   <article>
     <header>
       <h1>{post.data.title}</h1>
@@ -41,46 +55,32 @@ const updatedDate = post.data.updated
       </ul>
     </header>
 
-    <div class="article-body">
-      <div class="article-content">
-        <ul class="article-meta">
+    <div class="article-content">
+      <ul class="article-meta">
+        <li>
+          <span class="meta-label">📅</span>
+          <span>{publishDate}</span>
+        </li>
+        {updatedDate && (
           <li>
-            <span class="meta-label">📅</span>
-            <span>{publishDate}</span>
+            <span class="meta-label">🔄</span>
+            <span>{updatedDate}</span>
           </li>
-          {updatedDate && (
-            <li>
-              <span class="meta-label">🔄</span>
-              <span>{updatedDate}</span>
-            </li>
-          )}
-          {post.data.section && (
-            <li>
-              <span class="section-badge">{post.data.section}</span>
-            </li>
-          )}
+        )}
+        {post.data.section && (
           <li>
-            <span class="meta-label">⏱️</span>
-            <span>{readingTime} 分钟</span>
+            <span class="section-badge">{post.data.section}</span>
           </li>
-        </ul>
-        <div class="article-text">
-          <Content />
-        </div>
-      </div>
+        )}
+        <li>
+          <span class="meta-label">⏱️</span>
+          <span>{readingTime} 分钟</span>
+        </li>
+      </ul>
 
-      {tocHeadings.length > 1 && (
-        <aside class="toc-wrapper">
-          <p class="toc-title">目录</p>
-          <ul class="toc-list">
-            {tocHeadings.map(h => (
-              <li class={h.depth === 3 ? 'toc-h3' : ''}>
-                <a href={`#${h.slug}`}>{h.text}</a>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      )}
+      <div class="article-text">
+        <Content />
+      </div>
     </div>
   </article>
 
@@ -131,24 +131,16 @@ const updatedDate = post.data.updated
     color: var(--color-accent);
   }
 
-  /* Article body: content + TOC separated */
-  .article-body {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
-    position: relative;
-  }
-
-  /* TOC: fixed to right side of viewport */
-  .toc-wrapper {
+  /* TOC: fixed to right edge of viewport */
+  .toc-fixed {
     position: fixed;
     top: calc(var(--nav-height) + 2rem);
-    right: 2rem;
+    right: 1.5rem;
     width: 200px;
     max-height: calc(100vh - var(--nav-height) - 4rem);
     overflow-y: auto;
     font-size: 0.8rem;
-    z-index: 5;
+    z-index: 100;
   }
 
   .toc-title {
@@ -194,13 +186,15 @@ const updatedDate = post.data.updated
     font-size: 0.78rem;
   }
 
-  /* Article content area */
+  /* Article content: centered, max-width */
   .article-content {
     max-width: 680px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
 
-  /* Meta row within content */
+  /* Meta row */
   .article-meta {
     display: flex;
     flex-wrap: wrap;
@@ -266,20 +260,10 @@ const updatedDate = post.data.updated
     font-size: 0.85em;
   }
 
-  /* Responsive: hide TOC on small screens */
+  /* Responsive: hide TOC on smaller screens */
   @media (max-width: 1100px) {
-    .toc-wrapper {
+    .toc-fixed {
       display: none;
-    }
-
-    .article-content {
-      max-width: 100%;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .article-body {
-      grid-template-columns: 1fr;
     }
   }
 </style>
