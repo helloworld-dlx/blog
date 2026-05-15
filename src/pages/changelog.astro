@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { changelog } from '../data/changelog';
+import type { ChangelogType } from '../data/changelog';
+
+const typeLabel: Record<ChangelogType, string> = {
+  site: '站点',
+  content: '内容',
+  deploy: '部署',
+  fix: '修复',
+};
+
+const typeColor: Record<ChangelogType, string> = {
+  site: '#3c5a9e',
+  content: '#2a7a2a',
+  deploy: '#8a5a2a',
+  fix: '#8a2a2a',
+};
+
+// Group by month-year
+const grouped = changelog.reduce<Record<string, typeof changelog>>((acc, entry) => {
+  const key = entry.date.slice(0, 7); // YYYY-MM
+  if (!acc[key]) acc[key] = [];
+  acc[key].push(entry);
+  return acc;
+}, {});
+
+const months = Object.keys(grouped).sort().reverse();
+---
+
+<BaseLayout title="Changelog" description="博客更新历史记录">
+  <main class="changelog">
+    <h1>Changelog</h1>
+    <p class="intro">博客结构、部署与功能的变更记录。</p>
+
+    {months.map(month => (
+      <div class="month-group">
+        <h2 class="month-label">{month}</h2>
+        <div class="entries">
+          {grouped[month].map(entry => (
+            <div class="entry">
+              <div class="entry-meta">
+                <span class="type-badge" style={`background: ${typeColor[entry.type]}20; color: ${typeColor[entry.type]}`}>
+                  {typeLabel[entry.type]}
+                </span>
+                <time datetime={entry.date}>{entry.date}</time>
+              </div>
+              <h3>{entry.title}</h3>
+              <p>{entry.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </main>
+</BaseLayout>
+
+<style>
+  .changelog {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .intro {
+    color: var(--color-text-muted);
+    margin-bottom: 3rem;
+    font-size: 0.9rem;
+  }
+
+  .month-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .month-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+  }
+
+  .entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-left: 2px solid var(--color-border);
+    padding-left: 1.25rem;
+    margin-left: 0.25rem;
+  }
+
+  .entry {
+    position: relative;
+    padding-bottom: 2rem;
+  }
+
+  .entry:last-child {
+    padding-bottom: 0;
+  }
+
+  .entry::before {
+    content: '';
+    position: absolute;
+    left: -1.9rem;
+    top: 0.3rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    border: 2px solid var(--color-bg);
+  }
+
+  .entry-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .type-badge {
+    display: inline-block;
+    padding: 0.1rem 0.45rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .entry time {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  .entry h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+  }
+
+  .entry p {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    .changelog {
+      padding: 2rem 1rem;
+    }
+  }
+</style>

@@ -4,19 +4,44 @@ const year = new Date().getFullYear();
 
 <footer>
   <div class="container">
-    <p>&copy; {year} dlx · 记录与思考</p>
+    <p class="footer-text">
+      <span>&copy; {year} dlx</span>
+      <span class="sep">·</span>
+      <span>记录与思考</span>
+      <span class="sep">·</span>
+      <a href="/changelog" class="footer-link">Changelog</a>
+    </p>
   </div>
 </footer>
 
 <style>
   footer {
     border-top: 1px solid var(--color-border);
-    padding: 1.5rem 0;
+    padding: 1.25rem 0;
     margin-top: 3rem;
   }
 
-  p {
+  .footer-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 0.8rem;
     color: var(--color-text-muted);
+    flex-wrap: wrap;
+  }
+
+  .sep {
+    opacity: 0.4;
+  }
+
+  .footer-link {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-link:hover {
+    color: var(--color-accent);
+    text-decoration: none;
   }
 </style>

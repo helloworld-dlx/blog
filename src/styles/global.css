@@ -8,7 +8,7 @@
   --color-accent-hover: #3a6a89;
   --color-border: #e1e4e8;
   --color-code-bg: #f0f2f5;
-  --color-tag-bg: #eef1f5;
+  --color-tag-bg: #edf1f6;
 
   --max-width: 720px;
   --nav-height: 56px;
@@ -32,6 +32,12 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
+  /* subtle grid background */
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: -1px -1px;
 }
 
 a {
@@ -55,6 +61,7 @@ code {
   padding: 0.15em 0.4em;
   border-radius: var(--radius);
   font-size: 0.85em;
+  border: 1px solid rgba(0,0,0,0.06);
 }
 
 pre {
@@ -64,19 +71,27 @@ pre {
   padding: 1.25rem;
   overflow-x: auto;
   line-height: 1.6;
+  font-size: 0.85rem;
 }
 
 pre code {
   background: none;
   padding: 0;
-  font-size: 0.875em;
+  font-size: inherit;
+  border: none;
 }
 
 blockquote {
   border-left: 3px solid var(--color-accent);
-  padding-left: 1rem;
+  padding: 0.6rem 1rem;
   color: var(--color-text-muted);
   margin: 1.5rem 0;
+  background: var(--color-code-bg);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 ul, ol {
@@ -119,13 +134,17 @@ time {
   color: var(--color-text-muted);
 }
 
+/* Pill-style tags */
 .tag {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   background: var(--color-tag-bg);
   color: var(--color-text-muted);
-  padding: 0.15rem 0.5rem;
-  border-radius: var(--radius);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(0,0,0,0.06);
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .tag-list {
@@ -179,17 +198,35 @@ time {
   border-radius: var(--radius);
   padding: 1.25rem;
   background: var(--color-surface);
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 
 .card:hover {
   border-color: var(--color-accent);
+  box-shadow: 0 3px 12px rgba(74, 125, 155, 0.10);
+  transform: translateY(-1px);
 }
 
+/* Section badge */
+.section-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  background: #e8f0fe;
+  color: #3c5a9e;
+  border-radius: 2rem;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(60, 90, 158, 0.15);
+}
+
+/* Table: horizontal scroll on mobile */
 table {
   overflow-x: auto;
   display: block;
   font-size: 0.875rem;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
 }
 
 article {
@@ -205,35 +242,28 @@ article h1 {
 
 article h2 {
   font-size: 1.2rem;
-  margin-top: 2rem;
+  margin-top: 2.25rem;
   margin-bottom: 0.75rem;
-  padding: 0.375rem 0.75rem;
-  background: var(--color-bg-subtle, #f0f2f5);
+  padding: 0.375rem 0.875rem;
+  background: var(--color-bg);
   border-left: 3px solid var(--color-accent);
   font-weight: 600;
+  border-radius: 0 var(--radius) var(--radius) 0;
 }
 
 article h3 {
   font-size: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
   margin-bottom: 0.5rem;
-  padding-left: 0.5rem;
+  padding-left: 0.625rem;
   border-left: 2px solid var(--color-border);
   font-weight: 600;
-}
-
-article h3 {
-  font-size: 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  padding-left: 0.5rem;
-  border-left: 2px solid var(--color-border);
-  font-weight: 600;
+  color: var(--color-text);
 }
 
 article h4 {
   font-size: 0.95rem;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
   color: var(--color-text);
@@ -255,7 +285,7 @@ article img {
   max-width: 100%;
   height: auto;
   display: block;
-  margin: 1rem 0;
+  margin: 1.25rem 0;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
 }
@@ -269,14 +299,14 @@ article li {
 }
 
 article pre {
-  margin: 1rem 0;
+  margin: 1.25rem 0;
   overflow-x: auto;
   background: var(--color-code-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  padding: 1rem;
+  padding: 1.125rem 1.25rem;
   font-size: 0.85rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 article pre code {
@@ -291,6 +321,7 @@ article code {
   padding: 0.15em 0.4em;
   border-radius: var(--radius);
   font-size: 0.85em;
+  border: 1px solid rgba(0,0,0,0.06);
 }
 
 article table {
@@ -298,38 +329,48 @@ article table {
   border-collapse: collapse;
   margin: 1.25rem 0;
   font-size: 0.875rem;
+  white-space: nowrap;
 }
 
 article table th {
-  background: var(--color-bg-subtle, #f0f2f5);
+  background: var(--color-bg);
   border: 1px solid var(--color-border);
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.875rem;
   text-align: left;
   font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
 }
 
 article table td {
   border: 1px solid var(--color-border);
-  padding: 0.4rem 0.75rem;
+  padding: 0.45rem 0.875rem;
   text-align: left;
+  vertical-align: top;
 }
 
-article table tr:nth-child(even) {
-  background: var(--color-bg-subtle, #f8f9fb);
+article table tr:nth-child(even) td {
+  background: rgba(0,0,0,0.018);
 }
 
 article blockquote {
-  margin: 1.25rem 0;
-  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  padding: 0.75rem 1.1rem;
   background: var(--color-code-bg);
   border-left: 3px solid var(--color-accent);
-  border-radius: var(--radius);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
 }
 
 article blockquote p:last-child {
   margin-bottom: 0;
 }
 
+/* Responsive */
 @media (max-width: 600px) {
   html {
     font-size: 15px;
@@ -339,6 +380,10 @@ article blockquote p:last-child {
     padding: 0 1rem;
   }
 
+  body {
+    background-size: 28px 28px;
+  }
+
   article {
     line-height: 1.75;
   }
@@ -346,4 +391,13 @@ article blockquote p:last-child {
   article h1 { font-size: 1.4rem; }
   article h2 { font-size: 1.05rem; }
   article h3 { font-size: 0.95rem; }
+
+  article table {
+    font-size: 0.825rem;
+  }
+
+  article table th,
+  article table td {
+    padding: 0.4rem 0.6rem;
+  }
 }

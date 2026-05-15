@@ -53,3 +53,17 @@
 4. 如果检查通过，`git add . && git commit && git push origin main`。
 5. 禁止 `git push --force`。
 6. 最后只汇报 build、commit、push 结果。
+
+### 用户发送"更新日志"时
+
+1. 从用户内容中提取 date、type、title、description。
+2. 如果用户没有指定 date，使用当天日期（格式 YYYY-MM-DD）。
+3. 如果用户没有指定 type，根据内容自动选择：
+   - 站点结构、页面、栏目变化 → `site`
+   - 新文章、文章整理、内容发布 → `content`
+   - 部署、域名、CDN、评论系统环境变量 → `deploy`
+   - Bug 修复、构建错误、样式问题 → `fix`
+4. 只追加 `src/data/changelog.ts`，不要修改其他页面。
+5. 不要 commit，不要 push。
+6. 修改后运行 `npm run build`。
+7. 最后只汇报新增的 changelog 条目和 build 结果。
