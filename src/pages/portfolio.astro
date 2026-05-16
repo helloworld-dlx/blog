@@ -24,15 +24,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="card">
       <h3>RISC-V 处理器仿真结构图</h3>
       <p class="card-desc">基于 Logisim 仿真的 8 条指令迷你 RISC-V 处理器（minirv），最终可以打印出"一生一芯"图标。</p>
-      <img src="/portfolio-riscv-struct.png" alt="32位 RISC-V 处理器核心模块结构图" class="portfolio-img" />
+      <div class="portfolio-grid">
+        <img src="/portfolio-riscv-struct.png" alt="32位 RISC-V 处理器核心模块结构图" class="portfolio-img clickable" data-full="/portfolio-riscv-struct.png" />
+      </div>
     </div>
 
     <div class="card">
       <h3>STC89C52RC 51单片机核心板</h3>
       <p class="card-desc">使用嘉立创EDA设计的51单片机核心板，USB-C供电、3.3V稳压、12MHz晶振、双层PCB布局，配有完整复位电路、用户LED与按键，全部GPIO引出排针。</p>
-      <img src="/portfolio-51-pcb-3d.png" alt="51单片机核心板 PCB 3D渲染图" class="portfolio-img" />
-      <img src="/portfolio-51-pcb-layout.png" alt="51单片机核心板 PCB 走线图" class="portfolio-img" style="margin-top: 0.75rem;" />
-      <img src="/portfolio-51-schematic.png" alt="51单片机核心板 原理图" class="portfolio-img" style="margin-top: 0.75rem;" />
+      <div class="portfolio-grid">
+        <img src="/portfolio-51-pcb-3d.png" alt="51单片机核心板 PCB 3D渲染图" class="portfolio-img clickable" data-full="/portfolio-51-pcb-3d.png" />
+        <img src="/portfolio-51-pcb-layout.png" alt="51单片机核心板 PCB 走线图" class="portfolio-img clickable" data-full="/portfolio-51-pcb-layout.png" />
+        <img src="/portfolio-51-schematic.png" alt="51单片机核心板 原理图" class="portfolio-img clickable" data-full="/portfolio-51-schematic.png" />
+      </div>
     </div>
   </section>
 
@@ -43,8 +47,44 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
+    <span class="lightbox-close" aria-label="关闭">&times;</span>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
 
 </BaseLayout>
+
+<script>
+  const lightbox = document.getElementById('lightbox')!;
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const closeBtn = document.querySelector('.lightbox-close') as HTMLElement;
+
+  document.querySelectorAll('.portfolio-img.clickable').forEach(img => {
+    img.addEventListener('click', () => {
+      const fullSrc = (img as HTMLImageElement).dataset.full || (img as HTMLImageElement).src;
+      lightboxImg.src = fullSrc;
+      lightboxImg.alt = (img as HTMLImageElement).alt;
+      lightbox.classList.add('active');
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    lightbox.classList.remove('active');
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.remove('active');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+      lightbox.classList.remove('active');
+    }
+  });
+</script>
 
 <style>
   .page-header {
@@ -83,6 +123,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
+    margin-bottom: 1rem;
   }
 
   .card.dashed {
@@ -122,10 +163,55 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     text-decoration: underline;
   }
 
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
   .portfolio-img {
     width: 100%;
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
-    margin-top: 0.75rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .portfolio-img:hover {
+    opacity: 0.8;
+  }
+
+  /* Lightbox styles */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .lightbox.active {
+    display: flex;
+  }
+
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: var(--radius);
+    cursor: default;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+    line-height: 1;
   }
 </style>
