@@ -9,6 +9,12 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    date: '2026-05-16',
+    type: 'site',
+    title: '作品集页面新增51单片机核心板成果图',
+    description: '新增 STC89C52RC 核心板的原理图与 PCB 成果图，采用缩略图 Grid 网格布局，点击可触发 Lightbox 灯箱放大查看。',
+  },
+  {
     date: '2026-05-13',
     type: 'site',
     title: '博客重建为 Astro 静态站',
