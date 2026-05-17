@@ -15,7 +15,6 @@ export const changelog: ChangelogEntry[] = [
     description: '成果图区域改为缩略图 Grid 网格布局，点击可放大查看。同时更新了移动端自适应样式。',
   },
   {
-  {
     date: '2026-05-13',
     type: 'site',
     title: '博客重建为 Astro 静态站',
