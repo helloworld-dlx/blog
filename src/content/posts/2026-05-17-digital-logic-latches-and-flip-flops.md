@@ -92,7 +92,7 @@ Q 的下一状态 Q⁺ 如何由输入和当前 Q 决定
 
 ---
 
-  <img src="/images/triggering/pulse-triggering.png" alt="锁存器与触发器结构对比" width="700" />
+ <img src="/images/triggering/pulse-triggering.png" alt="锁存器与触发器结构对比" width="700" />
 ## 第二部分：各种器件详解
 
 ### 5. SR 锁存器
@@ -453,10 +453,7 @@ $$
 | 按逻辑功能分 SR、JK、T、D | SR、JK、T、D 是状态转移功能分类 | 和电平 / 边沿 / 脉冲不是同一维度 |
 
 ---
-
-  <img src="/images/triggering/level-triggering.png" alt="三个分类维度与结构演化" width="700" />
-  <img src="/images/triggering/edge-triggering.png" alt="教材叫法与现代理解对照" width="700" />
-### 13. "脉冲触发"和"边沿触发"的关系
+### 13. 脉冲触发和边沿触发的关系
 
 | 类型 | 本质 | 有效时间 | 你可以怎么想 |
 | -------- | -------------------------- | ------------ | ------------------ |
@@ -464,6 +461,9 @@ $$
 | 脉冲触发 | 门只打开一个很窄的时间窗口 | 很短一段时间 | 门快速开一下又关上 |
 | 边沿触发 | 理想化为只在边沿采样一次 | 一个时刻 | 拍一张照片 |
 
+
+ <img src="/images/triggering/level-triggering.png" alt="三个分类维度与结构演化" width="700" />
+ <img src="/images/triggering/edge-triggering.png" alt="教材叫法与现代理解对照" width="700" />
 
 ## 第四部分：互相转化
 
