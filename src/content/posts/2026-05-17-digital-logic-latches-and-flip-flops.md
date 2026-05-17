@@ -385,6 +385,7 @@ $$
 ---
 
 ## 第三部分：教材中的分类放到这套框架中
+ <img src="/images/triggering/edge-triggering.png" alt="教材叫法与现代理解对照" width="700" />
 
 ### 11. 三个分类维度的关系
 
@@ -463,7 +464,6 @@ $$
 
 
  <img src="/images/triggering/level-triggering.png" alt="三个分类维度与结构演化" width="700" />
- <img src="/images/triggering/edge-triggering.png" alt="教材叫法与现代理解对照" width="700" />
 
 ## 第四部分：互相转化
 
