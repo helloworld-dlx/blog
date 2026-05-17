@@ -93,6 +93,7 @@ Q 的下一状态 Q⁺ 如何由输入和当前 Q 决定
 ---
 
  <img src="/images/triggering/pulse-triggering.png" alt="锁存器与触发器结构对比" width="700" />
+
 ## 第二部分：各种器件详解
 
 ### 5. SR 锁存器
