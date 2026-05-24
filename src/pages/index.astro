@@ -15,6 +15,7 @@ const featuredPosts = allPosts
 我喜欢把复杂的底层逻辑拆解明白，也喜欢捣鼓好玩的硬件设备。</p>
     <p class="focus">正在推进一生一芯、Verilog、计算机体系结构</p>
     <p class="focus">正在构建 AI Agent 生产力系统</p>
+    <p class="about-link"><a href="/about">→ 认识 dlx →</a></p>
   </section>
 
   <section class="主线">
@@ -97,6 +98,25 @@ const featuredPosts = allPosts
   .focus {
     color: var(--color-text-muted);
     font-size: 0.9rem;
+  }
+
+
+  .about-link {
+    margin-top: 1rem;
+  }
+
+
+  .about-link a {
+    font-size: 0.9rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+
+
+  .about-link a:hover {
+    border-bottom-color: var(--color-accent);
   }
 
   section {
