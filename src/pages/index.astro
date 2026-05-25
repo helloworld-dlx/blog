@@ -11,11 +11,9 @@ const featuredPosts = allPosts
 <BaseLayout title="dlx's Digital Lab">
   <section class="hero">
     <h1>dlx 的数字实验室</h1>
-    <p class="tagline">你好，我是 dlx，一名主攻数字 IC 设计的大一学生。<br />
-我喜欢把复杂的底层逻辑拆解明白，也喜欢捣鼓好玩的硬件设备。</p>
-    <p class="focus">正在推进一生一芯、Verilog、计算机体系结构</p>
-    <p class="focus">正在构建 AI Agent 生产力系统</p>
-    <p class="about-link"><a href="/about">→ 认识 dlx →</a></p>
+    <p class="tagline">大一IC学生，底层架构学徒。<br />
+正在手搓 RISC-V 处理器，在树莓派上驯服 AI Agent。<br />
+目标：数字 IC 架构师。</p>
   </section>
 
   <section class="主线">
@@ -36,6 +34,10 @@ const featuredPosts = allPosts
   <section class="栏目入口">
     <h2>栏目</h2>
     <div class="grid">
+      <a href="/about" class="card nav-card">
+        <h3>关于</h3>
+        <p>个人简介、技术方向、长期规划、联系方式</p>
+      </a>
       <a href="/lab" class="card nav-card">
         <h3>实验手记</h3>
         <p>一生一芯、体系结构、Verilog、Linux、OpenClaw、Hermes、树莓派</p>
@@ -101,23 +103,7 @@ const featuredPosts = allPosts
   }
 
 
-  .about-link {
-    margin-top: 1rem;
-  }
 
-
-  .about-link a {
-    font-size: 0.9rem;
-    color: var(--color-accent);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.15s;
-  }
-
-
-  .about-link a:hover {
-    border-bottom-color: var(--color-accent);
-  }
 
   section {
     margin-bottom: 2.5rem;
