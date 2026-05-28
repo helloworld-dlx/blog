@@ -2,7 +2,7 @@
 title: "等一个秋天的推门声"
 date: "2026-05-28"
 description: "在这个祝彼此前程似锦的年纪，我偏偏想留在过去。去他的向前看，我只想留在原地，赌一个秋天的推门声。"
-draft: true
+draft: false
 section: mind
 tags: ["essay"]
 featured: true
