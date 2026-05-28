@@ -16,8 +16,8 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 
-const wordCount = post.body.split(/\s+/).length;
-const readingTime = Math.ceil(wordCount / 200);
+const wordCount = post.body.replace(/\s+/g, '').length;
+const readingTime = Math.ceil(wordCount / 500);
 
 const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 

@@ -6,7 +6,7 @@ section: lab
 tags:
   - digital-logic
   - course-notes
-featured: true
+featured: false
 draft: false
 ---
 > **先用现代数字设计视角建立清晰主线，再把教材中的写法放回这套框架中解释。**
