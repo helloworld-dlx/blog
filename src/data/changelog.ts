@@ -9,6 +9,12 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    date: '2026-08-17',
+    type: 'site',
+    title: '完成全站视觉与信息架构更新，加入明暗主题、文章置顶、新的作品集结构和 About 页面，并更新博客管理流程。',
+    description: '',
+  },
+  {
     date: '2026-05-16',
     type: 'site',
     title: '作品集页面新增 Lightbox 灯箱功能',
