@@ -11,8 +11,8 @@ export const changelog: ChangelogEntry[] = [
   {
     date: '2026-08-17',
     type: 'site',
-    title: '完成全站视觉与信息架构更新，加入明暗主题、文章置顶、新的作品集结构和 About 页面，并更新博客管理流程。',
-    description: '',
+    title: '全站视觉与信息架构更新',
+    description: '明暗主题切换、首页文章置顶功能、PostIndex 组件重构、Header/Footer 大改版、作品集页面重新排版、About 页面更新、博客管理流程规范化。',
   },
   {
     date: '2026-05-16',
