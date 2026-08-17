@@ -1,20 +1,17 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostIndex from '../../components/PostIndex.astro';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
   const publishedPosts = allPosts.filter(post => !post.data.draft);
-
-  // Dynamically collect all unique tags from published posts
   const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
 
   return allTags.map(tag => ({
     params: { tag },
     props: {
-      posts: publishedPosts
-        .filter(post => post.data.tags.includes(tag))
-        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+      posts: publishedPosts.filter(post => post.data.tags.includes(tag)),
     },
   }));
 }
@@ -24,157 +21,11 @@ const { posts } = Astro.props;
 ---
 
 <BaseLayout title={`#${tag}`} description={`标签 ${tag} 下的文章`}>
-  <div class="tag-page">
-    <div class="tag-header">
-      <span class="tag-prefix">#</span><span class="tag-name">{tag}</span>
-      <span class="tag-count">{posts.length} 篇</span>
-    </div>
-
-    {posts.length === 0 ? (
-      <div class="empty-state">
-        <p>暂无文章。</p>
-      </div>
-    ) : (
-      <ul class="post-list">
-        {posts.map(post => (
-          <li class="post-item">
-            <a href={`/posts/${post.id}`} class="post-link">
-              <div class="post-main">
-                <span class="post-title">{post.data.title}</span>
-                <span class="post-date">{post.data.date.toLocaleDateString('zh-CN')}</span>
-              </div>
-              <p class="post-desc">{post.data.description}</p>
-            </a>
-          </li>
-        ))}
-      </ul>
-    )}
-
-    <div class="back-link">
-      <a href="/tags">← 全部标签</a>
-    </div>
-  </div>
+  <PostIndex
+    posts={posts}
+    title={`#${tag}`}
+    kicker="Tag"
+    description={`标签 ${tag} 下的公开文章。`}
+    showSection={true}
+  />
 </BaseLayout>
-
-<style>
-  .tag-page {
-    padding-top: 0.5rem;
-  }
-
-  .tag-header {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .tag-prefix {
-    font-size: 1.5rem;
-    color: var(--color-text-muted);
-    font-weight: 400;
-  }
-
-  .tag-name {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--color-text);
-  }
-
-  .tag-count {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    margin-left: auto;
-  }
-
-  .post-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .post-item {
-    margin: 0;
-  }
-
-  .post-link {
-    display: block;
-    padding: 1rem 1.125rem;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-
-  .post-link:hover {
-    border-color: var(--color-accent);
-    box-shadow: 0 2px 8px rgba(74, 125, 155, 0.08);
-  }
-
-  .post-main {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 0.25rem;
-  }
-
-  .post-title {
-    font-size: 0.975rem;
-    font-weight: 600;
-    color: var(--color-text);
-  }
-
-  .post-date {
-    font-size: 0.775rem;
-    color: var(--color-text-muted);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .post-desc {
-    font-size: 0.825rem;
-    color: var(--color-text-muted);
-    line-height: 1.55;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .empty-state {
-    padding: 2rem;
-    text-align: center;
-    border: 1px dashed var(--color-border);
-    border-radius: var(--radius);
-  }
-
-  .empty-state p {
-    color: var(--color-text-muted);
-    font-size: 0.875rem;
-    margin: 0;
-  }
-
-  .back-link {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .back-link a {
-    font-size: 0.875rem;
-    color: var(--color-accent);
-    text-decoration: none;
-  }
-
-  .back-link a:hover {
-    text-decoration: underline;
-  }
-</style>

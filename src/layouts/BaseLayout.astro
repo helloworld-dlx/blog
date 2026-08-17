@@ -9,12 +9,16 @@ interface Props {
 }
 
 const siteTitle = "dlx's Digital Lab";
-const { title, description = '记录 IC 设计学习、一生一芯、Verilog、AI Agent 工作流和长期技术思考。' } = Astro.props;
+const {
+  title,
+  description = '记录 IC 设计学习、一生一芯、Verilog、AI Agent 工作流和长期技术思考。',
+} = Astro.props;
+
 const pageTitle = title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="auto">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,6 +32,17 @@ const pageTitle = title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title={siteTitle} href="/rss.xml" />
     <title>{pageTitle}</title>
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('ykernel-theme');
+          document.documentElement.dataset.theme =
+            saved === 'light' || saved === 'dark' || saved === 'auto' ? saved : 'auto';
+        } catch {
+          document.documentElement.dataset.theme = 'auto';
+        }
+      })();
+    </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
   </head>
   <body>

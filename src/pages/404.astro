@@ -11,31 +11,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  .not-found {
-    text-align: center;
-    padding: 4rem 0;
-  }
-
-  .not-found h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    color: var(--color-border);
-    margin-bottom: 1rem;
-  }
-
-  .not-found p {
-    font-size: 1rem;
-    color: var(--color-text-muted);
-    margin-bottom: 2rem;
-  }
-
-  .not-found a {
-    color: var(--color-accent);
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
-
-  .not-found a:hover {
-    text-decoration: underline;
-  }
+  .not-found { max-width: 34rem; padding: 5rem 0; }
+  .not-found h1 { margin-bottom: 0.65rem; color: var(--color-accent-strong); font-family: var(--font-mono); font-size: 3.2rem; letter-spacing: -0.05em; }
+  .not-found p { margin-bottom: 1.3rem; color: var(--color-text-muted); }
+  .not-found a { color: var(--color-accent-strong); font-size: 0.85rem; text-decoration: none; }
 </style>

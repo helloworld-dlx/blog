@@ -9,89 +9,232 @@ const navLinks = [
 ];
 
 const currentPath = Astro.url.pathname;
+const isActive = (href: string) =>
+  currentPath === href || (href !== '/' && currentPath.startsWith(href));
 ---
 
-<header>
-  <div class="container">
-    <nav>
+<header class="site-header">
+  <div class="container header-container">
+    <nav class="desktop-nav" aria-label="主导航">
       {navLinks.map(link => (
-        <a
-          href={link.href}
-          class={currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href)) ? 'active' : ''}
-        >
+        <a href={link.href} class={isActive(link.href) ? 'active' : ''}>
           {link.label}
         </a>
       ))}
-      <a href="/search" class="search-icon" aria-label="搜索">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </nav>
+
+    <div class="header-actions">
+      <a
+        href="/search"
+        class:list={['icon-button', 'search-button', { active: currentPath.startsWith('/search') }]}
+        aria-label="搜索"
+        title="搜索"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7.2" />
+          <path d="m16.4 16.4 4.1 4.1" />
         </svg>
       </a>
-    </nav>
+
+      <button
+        type="button"
+        class="icon-button theme-toggle"
+        data-theme-toggle
+        aria-label="切换颜色主题"
+        title="颜色主题"
+      >◐</button>
+
+      <details class="mobile-menu">
+        <summary aria-label="打开导航菜单">☰</summary>
+        <div class="mobile-panel">
+          {navLinks.map(link => (
+            <a href={link.href} class={isActive(link.href) ? 'active' : ''}>
+              {link.label}
+            </a>
+          ))}
+          <a href="/search" class={currentPath.startsWith('/search') ? 'active' : ''}>搜索</a>
+        </div>
+      </details>
+    </div>
   </div>
 </header>
 
+<script is:inline>
+  (() => {
+    const button = document.querySelector('[data-theme-toggle]');
+    if (!(button instanceof HTMLButtonElement)) return;
+
+    const modes = ['auto', 'light', 'dark'];
+    const labels = {
+      auto: ['◐', '跟随系统'],
+      light: ['☀', '浅色'],
+      dark: ['☾', '深色'],
+    };
+
+    const setButton = (mode) => {
+      const pair = labels[mode] || labels.auto;
+      button.textContent = pair[0];
+      button.title = `当前：${pair[1]}。点击切换`;
+      button.setAttribute('aria-label', `颜色主题：${pair[1]}。点击切换`);
+    };
+
+    let current = document.documentElement.dataset.theme || 'auto';
+    if (!modes.includes(current)) current = 'auto';
+    setButton(current);
+
+    button.addEventListener('click', () => {
+      const index = modes.indexOf(current);
+      current = modes[(index + 1) % modes.length];
+      document.documentElement.dataset.theme = current;
+      try {
+        localStorage.setItem('ykernel-theme', current);
+      } catch {}
+      setButton(current);
+    });
+  })();
+</script>
+
 <style>
-  header {
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+  .site-header {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 30;
+    background: color-mix(in srgb, var(--color-bg) 90%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 90%, transparent);
+    backdrop-filter: blur(10px);
   }
 
-  nav {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0 1.25rem;
-    align-items: center;
+  .header-container {
     height: var(--nav-height);
-    overflow-x: auto;
-    scrollbar-width: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
-  nav::-webkit-scrollbar {
-    display: none;
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    min-width: 0;
   }
 
-  a {
+  .desktop-nav a {
     color: var(--color-text-muted);
-    font-size: 0.9rem;
-    padding: 0.2rem 0;
-    white-space: nowrap;
-    text-decoration: none;
+    font-size: 0.84rem;
+    padding: 1.25rem 0 1.05rem;
     border-bottom: 2px solid transparent;
+    text-decoration: none;
+    white-space: nowrap;
     transition: color 0.15s, border-color 0.15s;
   }
 
-  a:hover,
-  a.active {
-    color: var(--color-accent);
+  .desktop-nav a:hover,
+  .desktop-nav a.active {
+    color: var(--color-accent-strong);
     border-bottom-color: var(--color-accent);
     text-decoration: none;
   }
 
-  .search-icon {
+  .header-actions {
     margin-left: auto;
-    padding: 0.2rem 0 !important;
-    border-bottom: none !important;
     display: flex;
     align-items: center;
+    gap: 0.2rem;
+  }
+
+  .icon-button {
+    width: 2.35rem;
+    height: 2.35rem;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 0.55rem;
+    background: transparent;
     color: var(--color-text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.15s, background 0.15s;
   }
 
-  .search-icon:hover {
-    color: var(--color-accent);
+  .icon-button:hover,
+  .icon-button.active {
+    color: var(--color-text);
+    background: var(--color-bg-subtle);
+    text-decoration: none;
   }
 
-  @media (max-width: 600px) {
-    nav {
-      gap: 0 1rem;
+  .search-button svg {
+    width: 21px;
+    height: 21px;
+    stroke-width: 1.9;
+  }
+
+  .theme-toggle {
+    font-size: 1.03rem;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: relative;
+  }
+
+  .mobile-menu summary {
+    width: 2.35rem;
+    height: 2.35rem;
+    display: grid;
+    place-items: center;
+    list-style: none;
+    border-radius: 0.55rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .mobile-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-menu summary:hover {
+    background: var(--color-bg-subtle);
+    color: var(--color-text);
+  }
+
+  .mobile-panel {
+    position: absolute;
+    right: 0;
+    top: 2.75rem;
+    width: 12.5rem;
+    padding: 0.45rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .mobile-panel a {
+    display: block;
+    padding: 0.55rem 0.7rem;
+    color: var(--color-text-muted);
+    border-radius: 0.45rem;
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  .mobile-panel a:hover,
+  .mobile-panel a.active {
+    color: var(--color-text);
+    background: var(--color-bg-subtle);
+    text-decoration: none;
+  }
+
+  @media (max-width: 700px) {
+    .desktop-nav {
+      display: none;
     }
 
-    a {
-      font-size: 0.875rem;
+    .mobile-menu {
+      display: block;
     }
   }
 </style>

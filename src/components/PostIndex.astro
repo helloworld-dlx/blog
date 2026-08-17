@@ -1,0 +1,309 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+  title: string;
+  description: string;
+  kicker?: string;
+  showSection?: boolean;
+}
+
+const {
+  posts,
+  title,
+  description,
+  kicker,
+  showSection = false,
+} = Astro.props;
+
+const sectionLabels: Record<string, string> = {
+  lab: '实验手记',
+  study: '通识基础',
+  mind: '随想录',
+  project: '作品集',
+};
+
+const pinnedPosts = posts
+  .filter(post => post.data.pinned)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const regularPosts = posts
+  .filter(post => !post.data.pinned)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const years = [...new Set(regularPosts.map(post => post.data.date.getFullYear()))]
+  .sort((a, b) => b - a);
+---
+
+<div class="post-index-layout">
+  <aside class="post-index-intro">
+    {kicker && <p class="index-kicker">{kicker}</p>}
+    <h1>{title}</h1>
+    <p>{description}</p>
+    <span class="post-count">{posts.length} 篇文章</span>
+  </aside>
+
+  <div class="post-index-content">
+    {posts.length === 0 ? (
+      <p class="empty">暂无文章。</p>
+    ) : (
+      <>
+        {pinnedPosts.length > 0 && (
+          <section class="pinned-group">
+            <div class="index-list pinned-list">
+              {pinnedPosts.map(post => (
+                <article class="index-row pinned">
+                  <time datetime={post.data.date.toISOString()}>
+                    {post.data.date.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' })}
+                  </time>
+                  <div class="row-copy">
+                    <div class="row-title">
+                      <span class="pin-label">置顶</span>
+                      <h2><a href={`/posts/${post.id}`}>{post.data.title}</a></h2>
+                    </div>
+                    <p>{post.data.description}</p>
+                    <div class="row-meta">
+                      {showSection && post.data.section && (
+                        <span class="section-name">{sectionLabels[post.data.section] ?? post.data.section}</span>
+                      )}
+                      {post.data.tags?.slice(0, 4).map(tag => (
+                        <a class="tag-link" href={`/tags/${encodeURIComponent(tag)}`}>#{tag}</a>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {years.map(year => (
+          <section class="year-group">
+            <p class="year-label">{year}</p>
+            <div class="index-list">
+              {regularPosts
+                .filter(post => post.data.date.getFullYear() === year)
+                .map(post => (
+                  <article class="index-row">
+                    <time datetime={post.data.date.toISOString()}>
+                      {post.data.date.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' })}
+                    </time>
+                    <div class="row-copy">
+                      <div class="row-title">
+                        <h2><a href={`/posts/${post.id}`}>{post.data.title}</a></h2>
+                      </div>
+                      <p>{post.data.description}</p>
+                      <div class="row-meta">
+                        {showSection && post.data.section && (
+                          <span class="section-name">{sectionLabels[post.data.section] ?? post.data.section}</span>
+                        )}
+                        {post.data.tags?.slice(0, 4).map(tag => (
+                          <a class="tag-link" href={`/tags/${encodeURIComponent(tag)}`}>#{tag}</a>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+            </div>
+          </section>
+        ))}
+      </>
+    )}
+  </div>
+</div>
+
+<style>
+  .post-index-layout {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr);
+    gap: 3.5rem;
+    padding: 3.25rem 0 4.5rem;
+  }
+
+  .post-index-intro {
+    position: sticky;
+    top: calc(var(--nav-height) + 2rem);
+    align-self: start;
+  }
+
+  .index-kicker {
+    margin: 0 0 0.4rem;
+    color: var(--color-accent-strong);
+    font-family: var(--font-mono);
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .post-index-intro h1 {
+    margin: 0 0 0.65rem;
+    font-size: 1.75rem;
+    letter-spacing: -0.03em;
+  }
+
+  .post-index-intro > p:not(.index-kicker) {
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
+
+  .post-count {
+    display: block;
+    margin-top: 1.15rem;
+    color: var(--color-text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  .year-group {
+    margin-bottom: 2.35rem;
+  }
+
+  .year-label {
+    margin-bottom: 0.45rem;
+    color: var(--color-text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  .pinned-group {
+    margin-bottom: 1.55rem;
+  }
+
+  .pinned-list {
+    border-top-color: color-mix(in srgb, var(--color-accent) 22%, var(--color-border));
+  }
+
+  .index-list {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .index-row {
+    display: grid;
+    grid-template-columns: 4.7rem minmax(0, 1fr);
+    gap: 1.2rem;
+    padding: 1.38rem 0 1.42rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .index-row.pinned {
+    padding-top: 1.22rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .index-row > time {
+    padding-top: 0.16rem;
+    color: var(--color-text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+  }
+
+  .row-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.48rem;
+  }
+
+  .row-title h2 {
+    margin: 0 0 0.28rem;
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .row-title h2 a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .row-title h2 a:hover {
+    color: var(--color-accent-strong);
+    text-decoration: none;
+  }
+
+  .pin-label {
+    flex: 0 0 auto;
+    padding: 0.03rem 0.3rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 28%, var(--color-border));
+    border-radius: 2rem;
+    color: var(--color-accent-strong);
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    font-weight: 600;
+  }
+
+  .row-copy > p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.81rem;
+    line-height: 1.72;
+  }
+
+  .row-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.42rem;
+    margin-top: 0.72rem;
+  }
+
+  .section-name {
+    margin-right: 0.12rem;
+    color: var(--color-text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+  }
+
+  .tag-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.16rem 0.48rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 28%, var(--color-border));
+    border-radius: 2rem;
+    background: color-mix(in srgb, var(--color-accent-soft) 78%, var(--color-surface));
+    color: var(--color-accent-strong);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  }
+
+  .tag-link:hover {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+    color: var(--color-accent-strong);
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+
+  .empty {
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 820px) {
+    .post-index-layout {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      padding-top: 2.4rem;
+    }
+
+    .post-index-intro {
+      position: static;
+      max-width: 38rem;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .index-row {
+      grid-template-columns: 3.7rem minmax(0, 1fr);
+      gap: 0.75rem;
+    }
+
+  }
+</style>

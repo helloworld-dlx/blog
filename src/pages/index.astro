@@ -6,218 +6,407 @@ const allPosts = await getCollection('posts');
 const featuredPosts = allPosts
   .filter(post => post.data.featured && !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const sectionLabels: Record<string, string> = {
+  lab: '实验手记',
+  study: '通识基础',
+  mind: '随想录',
+  project: '作品集',
+};
 ---
 
 <BaseLayout title="dlx's Digital Lab">
   <section class="hero">
+    <p class="eyebrow">Digital Lab</p>
     <h1>dlx 的数字实验室</h1>
     <p class="tagline">你好，我是 dlx，一名主攻数字 IC 设计的大一学生。<br />
 我喜欢把复杂的底层逻辑拆解明白，也喜欢捣鼓好玩的硬件设备。</p>
-    <p class="focus">正在推进一生一芯、Verilog、计算机体系结构</p>
-    <p class="focus">正在构建 AI Agent 生产力系统</p>
+    <div class="focus-list">
+      <span>正在推进一生一芯、Verilog、计算机体系结构</span>
+      <span>正在构建 AI Agent 生产力系统</span>
+    </div>
   </section>
 
-  <section class="主线">
-    <h2>当前主线</h2>
-    <div class="grid">
-      <div>
+  <section class="threads-section">
+    <div class="section-heading">
+      <h2>当前主线</h2>
+      <span>Current threads</span>
+    </div>
+    <div class="threads">
+      <div class="thread">
+        <span class="thread-index">01</span>
         <p>一生一芯 / RISC-V / Verilog</p>
       </div>
-      <div>
+      <div class="thread">
+        <span class="thread-index">02</span>
         <p>OpenClaw / Hermes / Raspberry Pi</p>
       </div>
-      <div>
+      <div class="thread">
+        <span class="thread-index">03</span>
         <p>技术写作与日常思考</p>
       </div>
     </div>
   </section>
 
-  <section class="栏目入口">
-    <h2>栏目</h2>
-    <div class="grid">
-      <a href="/about" class="card nav-card">
-        <h3>关于</h3>
-        <p>个人简介、技术方向、长期规划、联系方式</p>
-      </a>
-      <a href="/lab" class="card nav-card">
-        <h3>实验手记</h3>
-        <p>一生一芯、体系结构、Verilog、Linux、OpenClaw、Hermes、树莓派</p>
-      </a>
-      <a href="/study" class="card nav-card">
-        <h3>通识基础</h3>
-        <p>高数、线代、英语、大学课程笔记</p>
-      </a>
-      <a href="/mind" class="card nav-card">
-        <h3>随想录</h3>
-        <p>读书、技术哲学、学习方法</p>
-      </a>
+  <section class="home-section">
+    <div class="section-heading">
+      <h2>作品与项目</h2>
+      <a href="/portfolio">查看作品集 →</a>
+    </div>
+    <div class="project-grid">
+      <article class="project-card project-primary">
+        <div class="project-head">
+          <h3>rtl-lab</h3>
+          <a href="https://github.com/helloworld-dlx/rtl-lab" target="_blank" rel="noopener" class="repo-link">GitHub ↗</a>
+        </div>
+        <p>Verilog 数字设计与综合成果整理仓库，记录 E5 阶段和数电课设中形成的独立实验、波形截图、综合观察。目前暂停，等 E5 完成和数电课设定题后重新规划。</p>
+      </article>
+
+      <article class="project-card">
+        <div class="project-head">
+          <h3>ysyx-prestudy</h3>
+          <a href="https://github.com/helloworld-dlx/ysyx-prestudy" target="_blank" rel="noopener" class="repo-link">GitHub ↗</a>
+        </div>
+        <p>一生一芯预学习阶段的学习记录与代码仓库，包含 C 语言手搓的 RISC-V 指令集模拟器（minirvEMU）以及 Verilog RTL 实现探索。</p>
+      </article>
     </div>
   </section>
 
-  <section class="portfolio">
-    <a href="/portfolio">
-      <h3>→ 作品集</h3>
-    </a>
-  </section>
-
   {featuredPosts.length > 0 && (
-    <section class="featured">
-      <h2>精选文章</h2>
-      <ul class="post-list">
+    <section class="home-section featured-section">
+      <div class="section-heading">
+        <h2>精选文章</h2>
+        <a href="/posts">全部文章 →</a>
+      </div>
+      <div class="featured-list">
         {featuredPosts.map(post => (
-          <li>
-            <a href={`/posts/${post.id}`}>
-              <h2>{post.data.title}</h2>
-            </a>
-            <p>{post.data.description}</p>
-          </li>
+          <a href={`/posts/${post.id}`} class="featured-row">
+            <time datetime={post.data.date.toISOString()}>
+              {post.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+            </time>
+            <div>
+              <h3>{post.data.title}</h3>
+              <p>{post.data.description}</p>
+            </div>
+            <span class="featured-section-label">{sectionLabels[post.data.section] ?? post.data.section}</span>
+          </a>
         ))}
-      </ul>
+      </div>
     </section>
   )}
+
+  <section class="home-section explore-section">
+    <div class="section-heading">
+      <h2>浏览栏目</h2>
+      <span>Explore</span>
+    </div>
+    <div class="explore-grid">
+      <a href="/lab" class="explore-card">
+        <h3>实验手记</h3>
+        <p>一生一芯、体系结构、Verilog、Linux、OpenClaw、Hermes、树莓派</p>
+      </a>
+      <a href="/study" class="explore-card">
+        <h3>通识基础</h3>
+        <p>高数、线代、英语、大学课程笔记</p>
+      </a>
+      <a href="/mind" class="explore-card">
+        <h3>随想录</h3>
+        <p>读书、技术哲学、学习方法</p>
+      </a>
+      <a href="/portfolio" class="explore-card">
+        <h3>作品集</h3>
+        <p>项目总结、成果图与作品集关联内容</p>
+      </a>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
   .hero {
-    padding: 3rem 0 2rem;
-    border-bottom: 1px solid var(--color-border);
-    margin-bottom: 2.5rem;
+    max-width: 50rem;
+    padding: 4rem 0 2.8rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--color-accent-strong);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .hero h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-text);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+    font-size: clamp(2rem, 5vw, 2.65rem);
+    letter-spacing: -0.04em;
   }
 
   .tagline {
-    font-size: 1.05rem;
-    color: var(--color-accent);
-    margin-bottom: 0.25rem;
+    max-width: 45rem;
+    color: var(--color-accent-strong);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.8;
+  }
+
+  .focus-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 1.2rem;
+  }
+
+  .focus-list span {
+    padding: 0.34rem 0.62rem;
+    border-radius: 2rem;
+    background: var(--color-accent-soft);
+    color: var(--color-text-muted);
+    font-size: 0.73rem;
+  }
+
+  .threads-section {
+    margin: 0 0 0.6rem;
+    padding: 1.55rem 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 18%, var(--color-border));
+    border-radius: 0.9rem;
+    background: color-mix(in srgb, var(--color-accent-soft) 52%, var(--color-surface));
+  }
+
+  .home-section {
+    padding: 2.9rem 0 0;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-heading > span,
+  .section-heading > a {
+    margin-left: auto;
+    color: var(--color-text-faint);
+    font-size: 0.68rem;
+  }
+
+  .section-heading > a {
+    color: var(--color-accent-strong);
+    text-decoration: none;
+  }
+
+  .threads {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .thread {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .thread-index {
+    flex: 0 0 auto;
+    color: var(--color-accent-strong);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+  }
+
+  .thread p {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.84rem;
     font-weight: 500;
   }
 
-  .focus {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 0.8rem;
   }
 
-
-
-
-  section {
-    margin-bottom: 2.5rem;
+  .project-card {
+    min-height: 12.5rem;
+    padding: 1.3rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.8rem;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-soft);
   }
 
-  h2 {
-    font-size: 0.8rem;
+  .project-primary {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-accent-soft) 54%, var(--color-surface)),
+      var(--color-surface) 56%
+    );
+  }
+
+  .project-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 2.4rem;
+  }
+
+  .project-head h3 {
+    margin: 0;
+    font-size: 1.18rem;
+    letter-spacing: -0.02em;
+  }
+
+  .repo-link {
+    margin-left: auto;
+    padding: 0.24rem 0.48rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 24%, var(--color-border));
+    border-radius: 0.45rem;
+    background: color-mix(in srgb, var(--color-accent-soft) 48%, var(--color-surface));
+    color: var(--color-accent-strong);
+    font-size: 0.66rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
-    margin-bottom: 0.875rem;
+    text-decoration: none;
   }
 
-  .grid {
+  .repo-link:hover {
+    border-color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .project-card > p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.79rem;
+    line-height: 1.72;
+  }
+
+  .featured-list {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .featured-row {
+    display: grid;
+    grid-template-columns: 6.2rem minmax(0, 1fr) auto;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--color-border);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .featured-row:hover {
+    text-decoration: none;
+  }
+
+  .featured-row time,
+  .featured-section-label {
+    padding-top: 0.15rem;
+    color: var(--color-text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+  }
+
+  .featured-row h3 {
+    margin: 0 0 0.18rem;
+    font-size: 0.94rem;
+  }
+
+  .featured-row:hover h3 {
+    color: var(--color-accent-strong);
+  }
+
+  .featured-row p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.77rem;
+  }
+
+  .explore-section {
+    padding-bottom: 0.6rem;
+  }
+
+  .explore-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
-    align-items: stretch;
+    gap: 0.7rem;
   }
 
-  @media (max-width: 768px) {
-    .grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .card {
+  .explore-card {
+    min-height: 7rem;
+    padding: 1rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
-    padding: 1rem;
     background: var(--color-surface);
-  }
-
-  .nav-card {
-    text-decoration: none;
     color: inherit;
-    display: block;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+    box-shadow: var(--shadow-soft);
+    transition: border-color 0.15s, transform 0.15s;
   }
 
-  .nav-card:hover {
+  .explore-card:hover {
     border-color: var(--color-accent);
-    box-shadow: 0 2px 8px rgba(74, 125, 155, 0.08);
-  }
-
-  .nav-card h3 {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-  }
-
-  .nav-card p {
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    margin: 0;
-  }
-
-  .grid > div p {
-    font-size: 0.875rem;
-    color: var(--color-text);
-    font-weight: 500;
-    margin: 0;
-  }
-
-  .portfolio {
-    border-top: 1px solid var(--color-border);
-    padding-top: 1.5rem;
-  }
-
-  .portfolio a {
     text-decoration: none;
-    color: var(--color-accent);
-    font-size: 0.95rem;
+    transform: translateY(-1px);
   }
 
-  .portfolio a:hover {
-    text-decoration: underline;
+  .explore-card h3 {
+    margin-bottom: 0.35rem;
+    font-size: 0.93rem;
   }
 
-  .featured .post-list {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    background: var(--color-surface);
-  }
-
-  .featured .post-list li {
-    padding: 1rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .featured .post-list li:last-child {
-    border-bottom: none;
-  }
-
-  .featured .post-list h2 {
-    font-size: 1rem;
-    text-transform: none;
-    letter-spacing: normal;
-  }
-
-  .featured .post-list a {
-    color: var(--color-text);
-    text-decoration: none;
-  }
-
-  .featured .post-list a:hover h2 {
-    color: var(--color-accent);
-  }
-
-  .featured .post-list p {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
+  .explore-card p {
     margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.76rem;
+    line-height: 1.65;
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      padding-top: 3.1rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+    }
+
+    .threads,
+    .project-grid,
+    .explore-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .threads {
+      gap: 0.7rem;
+    }
+
+    .project-card {
+      min-height: 0;
+    }
+
+    .project-head {
+      margin-bottom: 1.5rem;
+    }
+
+    .explore-card {
+      min-height: 0;
+    }
+
+    .featured-row {
+      grid-template-columns: 5rem minmax(0, 1fr);
+    }
+
+    .featured-section-label {
+      display: none;
+    }
   }
 </style>
