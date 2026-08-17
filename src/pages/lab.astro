@@ -7,11 +7,11 @@ const allPosts = await getCollection('posts');
 const posts = allPosts.filter(post => post.data.section === 'lab' && !post.data.draft);
 ---
 
-<BaseLayout title="实验手记" description="一生一芯、计算机体系结构、Verilog、Linux、工具链、OpenClaw、Hermes、树莓派与自动化工作流">
+<BaseLayout title="实验手记" description="处理器与体系结构、RTL/FPGA、Linux 工具链、Autumn，以及真实的 Debug 与工程实践记录">
   <PostIndex
     posts={posts}
     title="实验手记"
     kicker="Lab Notes"
-    description="一生一芯、计算机体系结构、Verilog、Linux、工具链、OpenClaw、Hermes、树莓派与自动化工作流折腾记录。"
+    description="处理器与体系结构、RTL/FPGA、Linux 工具链、Autumn，以及真实的 Debug 与工程实践记录折腾记录。"
   />
 </BaseLayout>

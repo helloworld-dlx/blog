@@ -7,11 +7,11 @@ const allPosts = await getCollection('posts');
 const posts = allPosts.filter(post => post.data.section === 'study' && !post.data.draft);
 ---
 
-<BaseLayout title="通识基础" description="高数、线代、英语、大学课程笔记、课堂心得、阶段成果与复习总结">
+<BaseLayout title="通识基础" description="课程学习、基础知识、复习整理与阶段性的学习笔记">
   <PostIndex
     posts={posts}
     title="通识基础"
     kicker="Study Notes"
-    description="高数、线代、英语、大学课程笔记、课堂心得、阶段成果与复习总结。"
+    description="课程学习、基础知识、复习整理与阶段性的学习笔记。"
   />
 </BaseLayout>

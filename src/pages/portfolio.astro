@@ -2,11 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="作品集" description="项目与成果图展示">
+<BaseLayout title="作品集" description="项目、实验与长期工程的整理与展示">
   <header class="page-header">
     <p class="kicker">Portfolio</p>
     <h1>作品集</h1>
-    <p>项目与成果图展示。</p>
+    <p>一些真正做过、正在做，以及值得长期留下来的项目与实验。</p>
   </header>
 
   <section class="section">
@@ -14,30 +14,45 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <article class="project-card">
       <div class="project-head">
-        <h3>rtl-lab</h3>
-        <a href="https://github.com/helloworld-dlx/rtl-lab" target="_blank" rel="noopener" class="repo-button" aria-label="在 GitHub 查看 rtl-lab">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .7a11.5 11.5 0 0 0-3.64 22.4c.58.11.79-.25.79-.56v-2.2c-3.22.7-3.9-1.36-3.9-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.39.97.1-.75.4-1.27.74-1.56-2.57-.29-5.27-1.29-5.27-5.73 0-1.27.45-2.3 1.2-3.12-.12-.3-.52-1.48.11-3.08 0 0 .98-.31 3.16 1.19a10.9 10.9 0 0 1 5.76 0c2.19-1.5 3.16-1.19 3.16-1.19.63 1.6.23 2.78.11 3.08.75.82 1.2 1.85 1.2 3.12 0 4.45-2.71 5.43-5.29 5.72.42.36.79 1.06.79 2.14v3.18c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg>
-          <span>GitHub</span><span aria-hidden="true">↗</span>
-        </a>
+        <div>
+          <h3>Autumn</h3>
+          <p class="project-meta">Personal AI System · Ongoing</p>
+        </div>
+        <span class="status-badge">Ongoing</span>
       </div>
-      <p class="card-desc">Verilog 数字设计与综合成果整理仓库，记录 E5 阶段和数电课设中形成的独立实验、波形截图、综合观察。目前暂停，等 E5 完成和数电课设定题后重新规划。</p>
+      <p class="card-desc">跨树莓派、Windows 和移动设备运行的个人 AI 助手系统，尝试把模型、工具、文件和任务组织成一个统一入口。</p>
     </article>
 
     <article class="project-card">
       <div class="project-head">
-        <h3>ysyx-prestudy</h3>
-        <a href="https://github.com/helloworld-dlx/ysyx-prestudy" target="_blank" rel="noopener" class="repo-button" aria-label="在 GitHub 查看 ysyx-prestudy">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .7a11.5 11.5 0 0 0-3.64 22.4c.58.11.79-.25.79-.56v-2.2c-3.22.7-3.9-1.36-3.9-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.39.97.1-.75.4-1.27.74-1.56-2.57-.29-5.27-1.29-5.27-5.73 0-1.27.45-2.3 1.2-3.12-.12-.3-.52-1.48.11-3.08 0 0 .98-.31 3.16 1.19a10.9 10.9 0 0 1 5.76 0c2.19-1.5 3.16-1.19 3.16-1.19.63 1.6.23 2.78.11 3.08.75.82 1.2 1.85 1.2 3.12 0 4.45-2.71 5.43-5.29 5.72.42.36.79 1.06.79 2.14v3.18c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg>
-          <span>GitHub</span><span aria-hidden="true">↗</span>
-        </a>
+        <div>
+          <h3>MajorPath</h3>
+          <p class="project-meta">Public-interest · Education · Ongoing</p>
+        </div>
+        <span class="status-badge">Ongoing</span>
       </div>
-      <p class="card-desc">一生一芯预学习阶段的学习记录与代码仓库，包含 C 语言手搓的 RISC-V 指令集模拟器（minirvEMU）以及 Verilog RTL 实现探索。</p>
+      <p class="card-desc">帮助高中生看懂大学专业、探索方向，减少盲选的公益网站。</p>
+      <p class="project-note">项目正在重构，公开链接会在合适的时候补上。</p>
+    </article>
+
+    <article class="project-card cpu-project">
+      <div class="project-head">
+        <div>
+          <h3>8-bit Custom CPU</h3>
+          <p class="project-meta">Digital Logic · Multisim · Custom ISA</p>
+        </div>
+        <span class="status-badge">Completed</span>
+      </div>
+      <p class="card-desc">数字电路课程设计。使用 Multisim 搭建 8 位自定义指令集 CPU，通过 PC、ROM、控制单元、寄存器与 ALU 完成取指、译码、运算和跳转，并用 GCD 程序验证执行流程。</p>
+      <div class="portfolio-grid cpu-shot">
+        <img src="/portfolio-8bit-custom-cpu.png" alt="8 位自定义指令集 CPU 的 Multisim 仿真总图" class="portfolio-img clickable" data-full="/portfolio-8bit-custom-cpu.png" />
+      </div>
     </article>
   </section>
 
   <section class="section">
     <div class="section-heading">
-      <h2>成果图</h2>
+      <h2>实验与成果</h2>
       <span>点击图片可放大查看</span>
     </div>
 
@@ -63,7 +78,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </article>
   </section>
-
 
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
     <button type="button" class="lightbox-close" aria-label="关闭">&times;</button>
@@ -99,126 +113,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </script>
 
 <style>
-  .page-header {
-    max-width: 44rem;
-    padding: 3.5rem 0 2rem;
-  }
-
-  .kicker {
-    color: var(--color-accent-strong);
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-  }
-
-  .page-header h1 {
-    margin: 0.35rem 0 0.4rem;
-    font-size: 2rem;
-    letter-spacing: -0.03em;
-  }
-
+  .page-header { max-width: 44rem; padding: 3.5rem 0 2rem; }
+  .kicker { color: var(--color-accent-strong); font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; }
+  .page-header h1 { margin: 0.35rem 0 0.4rem; font-size: 2rem; letter-spacing: -0.03em; }
   .page-header > p:last-child { color: var(--color-text-muted); font-size: 0.88rem; }
   .section { padding: 1.2rem 0 2.2rem; }
-
-  .section-heading {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
+  .section-heading { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem; }
   .section-heading h2 { margin: 0; font-size: 1.15rem; }
   .section-heading span { margin-left: auto; color: var(--color-text-faint); font-size: 0.68rem; }
 
-  .project-card,
-  .evidence-card {
-    margin-bottom: 0.9rem;
-    padding: 1.3rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    background: var(--color-surface);
-    box-shadow: var(--shadow-soft);
-  }
+  .project-card, .evidence-card { margin-bottom: 0.9rem; padding: 1.3rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-surface); box-shadow: var(--shadow-soft); }
+  .project-head { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.62rem; }
+  .project-head h3, .evidence-copy h3 { margin: 0; font-size: 1.05rem; }
+  .project-meta { margin: 0.14rem 0 0; color: var(--color-text-faint); font-family: var(--font-mono); font-size: 0.64rem; }
+  .status-badge { margin-left: auto; flex: 0 0 auto; padding: 0.18rem 0.42rem; border: 1px solid var(--color-border); border-radius: 2rem; color: var(--color-text-faint); font-family: var(--font-mono); font-size: 0.6rem; }
+  .card-desc, .evidence-copy p { margin: 0; color: var(--color-text-muted); font-size: 0.84rem; line-height: 1.7; }
+  .project-note { margin: 0.62rem 0 0; color: var(--color-text-faint); font-size: 0.71rem; }
 
-  .project-head {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .project-head h3,
-  .evidence-copy h3 { margin: 0; font-size: 1.05rem; }
-
-  .repo-button {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.34rem;
-    padding: 0.36rem 0.62rem;
-    border: 1px solid color-mix(in srgb, var(--color-accent) 26%, var(--color-border));
-    border-radius: 0.48rem;
-    background: color-mix(in srgb, var(--color-accent-soft) 46%, var(--color-surface));
-    color: var(--color-accent-strong);
-    font-size: 0.7rem;
-    font-weight: 600;
-    line-height: 1;
-    text-decoration: none;
-    transition: color 0.15s, border-color 0.15s, background 0.15s;
-  }
-
-  .repo-button svg { width: 0.9rem; height: 0.9rem; }
-  .repo-button:hover {
-    border-color: var(--color-accent);
-    background: var(--color-accent-soft);
-    color: var(--color-accent-strong);
-    text-decoration: none;
-  }
-  .card-desc,
-  .evidence-copy p { margin: 0; color: var(--color-text-muted); font-size: 0.84rem; line-height: 1.7; }
-
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
-    margin-top: 1rem;
-  }
-
+  .portfolio-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin-top: 1rem; }
   .portfolio-grid.single { grid-template-columns: minmax(0, 26rem); }
-
-  .portfolio-img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    border: 1px solid var(--color-border);
-    border-radius: 0.55rem;
-    cursor: pointer;
-    transition: opacity 0.15s, transform 0.15s;
-  }
-
+  .portfolio-grid.cpu-shot { grid-template-columns: minmax(0, 38rem); }
+  .cpu-shot .portfolio-img { aspect-ratio: auto; object-fit: contain; background: var(--color-bg-subtle); }
+  .portfolio-img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border: 1px solid var(--color-border); border-radius: 0.55rem; cursor: pointer; transition: opacity 0.15s, transform 0.15s; }
   .portfolio-img:hover { opacity: 0.88; transform: translateY(-1px); }
 
-
-  .lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background: rgba(8, 12, 15, 0.9);
-  }
-
+  .lightbox { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; padding: 2rem; background: rgba(8, 12, 15, 0.9); }
   .lightbox.active { display: flex; }
-  .lightbox img { max-width: min(92vw, 1200px); max-height: 90vh; border-radius: 0.65rem; }
+  .lightbox img { max-width: min(94vw, 1400px); max-height: 90vh; border-radius: 0.65rem; }
   .lightbox-close { position: absolute; top: 1rem; right: 1.3rem; border: 0; background: transparent; color: #fff; font-size: 2rem; cursor: pointer; }
 
   @media (max-width: 680px) {
     .portfolio-grid { grid-template-columns: 1fr; }
-    .portfolio-grid.single { grid-template-columns: 1fr; }
+    .portfolio-grid.single,
+    .portfolio-grid.cpu-shot { grid-template-columns: 1fr; }
     .project-head { align-items: flex-start; }
   }
 </style>

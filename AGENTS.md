@@ -38,6 +38,8 @@
 - 全站中文为主。
 - 对外的个人 AI 系统统一称为 `Autumn`。
 - OpenClaw、Hermes 等底层组件名只在确有技术内容需要时使用，不作为固定页面的项目身份。
+- 不在博客固定页面公开一生一芯代码仓库链接。
+- Autumn / MajorPath 的源码或仓库链接只有在用户明确批准后才公开。
 - `RISC-V`、`Verilog`、`Autumn`、`GitHub` 等专有名词自然保留英文。
 
 ## Response style

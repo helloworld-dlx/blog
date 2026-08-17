@@ -19,11 +19,11 @@ const sectionLabels: Record<string, string> = {
   <section class="hero">
     <p class="eyebrow">Digital Lab</p>
     <h1>dlx 的数字实验室</h1>
-    <p class="tagline">你好，我是 dlx，一名主攻数字 IC 设计的大一学生。<br />
+    <p class="tagline">你好，我是 dlx，一名集成电路设计专业学生。<br />
 我喜欢把复杂的底层逻辑拆解明白，也喜欢捣鼓好玩的硬件设备。</p>
     <div class="focus-list">
-      <span>正在推进一生一芯、Verilog、计算机体系结构</span>
-      <span>正在构建 AI Agent 生产力系统</span>
+      <span>处理器 / RTL / FPGA / AI 加速器</span>
+      <span>正在构建个人 AI 助手 Autumn</span>
     </div>
   </section>
 
@@ -35,15 +35,15 @@ const sectionLabels: Record<string, string> = {
     <div class="threads">
       <div class="thread">
         <span class="thread-index">01</span>
-        <p>一生一芯 / RISC-V / Verilog</p>
+        <p><strong>处理器与体系结构</strong><span>一生一芯 · RISC-V · Computer Architecture</span></p>
       </div>
       <div class="thread">
         <span class="thread-index">02</span>
-        <p>OpenClaw / Hermes / Raspberry Pi</p>
+        <p><strong>FPGA 与 RTL</strong><span>Verilog · FPGA · 数字设计</span></p>
       </div>
       <div class="thread">
         <span class="thread-index">03</span>
-        <p>技术写作与日常思考</p>
+        <p><strong>AI 与智能计算</strong><span>深度学习 · 神经网络 · AI 加速器</span></p>
       </div>
     </div>
   </section>
@@ -56,18 +56,18 @@ const sectionLabels: Record<string, string> = {
     <div class="project-grid">
       <article class="project-card project-primary">
         <div class="project-head">
-          <h3>rtl-lab</h3>
-          <a href="https://github.com/helloworld-dlx/rtl-lab" target="_blank" rel="noopener" class="repo-link">GitHub ↗</a>
+          <h3>Autumn</h3>
+          <span class="project-status">Ongoing</span>
         </div>
-        <p>Verilog 数字设计与综合成果整理仓库，记录 E5 阶段和数电课设中形成的独立实验、波形截图、综合观察。目前暂停，等 E5 完成和数电课设定题后重新规划。</p>
+        <p>跨树莓派、Windows 和移动设备运行的个人 AI 助手系统，尝试把模型、工具、文件和任务组织成一个统一入口。</p>
       </article>
 
       <article class="project-card">
         <div class="project-head">
-          <h3>ysyx-prestudy</h3>
-          <a href="https://github.com/helloworld-dlx/ysyx-prestudy" target="_blank" rel="noopener" class="repo-link">GitHub ↗</a>
+          <h3>MajorPath</h3>
+          <span class="project-status">Ongoing</span>
         </div>
-        <p>一生一芯预学习阶段的学习记录与代码仓库，包含 C 语言手搓的 RISC-V 指令集模拟器（minirvEMU）以及 Verilog RTL 实现探索。</p>
+        <p>帮助高中生看懂大学专业、探索方向，减少盲选的公益网站。</p>
       </article>
     </div>
   </section>
@@ -103,19 +103,19 @@ const sectionLabels: Record<string, string> = {
     <div class="explore-grid">
       <a href="/lab" class="explore-card">
         <h3>实验手记</h3>
-        <p>一生一芯、体系结构、Verilog、Linux、OpenClaw、Hermes、树莓派</p>
+        <p>处理器与体系结构、RTL / FPGA、Linux 工具链、Autumn 与工程实践</p>
       </a>
       <a href="/study" class="explore-card">
         <h3>通识基础</h3>
-        <p>高数、线代、英语、大学课程笔记</p>
+        <p>课程学习、基础知识、复习整理与阶段性的学习笔记</p>
       </a>
       <a href="/mind" class="explore-card">
         <h3>随想录</h3>
-        <p>读书、技术哲学、学习方法</p>
+        <p>读书、学习方法，以及一些日常思考</p>
       </a>
       <a href="/portfolio" class="explore-card">
         <h3>作品集</h3>
-        <p>项目总结、成果图与作品集关联内容</p>
+        <p>项目、实验和长期工程的整理与展示</p>
       </a>
     </div>
   </section>
@@ -225,8 +225,20 @@ const sectionLabels: Record<string, string> = {
   .thread p {
     margin: 0;
     color: var(--color-text);
+  }
+
+  .thread strong {
+    display: block;
+    margin-bottom: 0.12rem;
     font-size: 0.84rem;
-    font-weight: 500;
+    font-weight: 600;
+  }
+
+  .thread p span {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: 0.68rem;
+    line-height: 1.55;
   }
 
   .project-grid {
@@ -265,6 +277,14 @@ const sectionLabels: Record<string, string> = {
     letter-spacing: -0.02em;
   }
 
+
+  .project-status {
+    margin-left: auto;
+    color: var(--color-text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.02em;
+  }
   .repo-link {
     margin-left: auto;
     padding: 0.24rem 0.48rem;

@@ -6,7 +6,7 @@ import Comments from '../components/Comments.astro';
 <BaseLayout title="关于" description="关于 dlx">
   <div class="about-layout">
     <aside class="about-nav" aria-label="关于页面目录">
-      <div class="about-mark">A</div>
+      <div class="about-mark">dlx</div>
       <a href="#who">01 · 我是谁</a>
       <a href="#learning">02 · 我现在在学什么</a>
       <a href="#building">03 · 我正在构建什么</a>
@@ -22,7 +22,7 @@ import Comments from '../components/Comments.astro';
 
       <section id="who">
         <h2><span>01</span>我是谁</h2>
-        <p>你好，我是 dlx。一名目前大一在读的集成电路（IC）专业学生。</p>
+        <p>你好，我是 dlx。一名集成电路设计专业学生。</p>
         <p>相较于在应用层调用写好的 API 框架，我更着迷于弄清楚一行高级语言代码，是如何跨越编译器、指令集和微架构，最终转变成硅片上成千上万个逻辑门电信号跳变的。</p>
         <p>这里是我的数字实验室，记录我作为一个底层架构学徒的折腾日常。</p>
       </section>
@@ -30,7 +30,7 @@ import Comments from '../components/Comments.astro';
       <section id="learning">
         <h2><span>02</span>我现在在学什么</h2>
         <p>我的核心学习主线是计算机体系结构与数字前端设计。</p>
-        <p>目前，我正处于从纯软件思维（C/C++ 顺序执行）向硬件物理思维（Verilog 并发执行）的重构期。日常不仅在和底层的指针与内存打交道，也在折腾 Linux (WSL2) 环境、Makefile 编译规则以及 Verilator 硬件仿真工具链。我在学习如何像一个工程师一样，在逻辑的严密性与物理的限制（性能、功耗、面积）之间寻找平衡。</p>
+        <p>目前，我正处于从纯软件思维（C/C++ 顺序执行）向硬件物理思维（Verilog 并发执行）的重构期。日常不仅在和底层的指针与内存打交道，也在折腾 VMware 中的 Ubuntu 环境、Makefile 编译规则以及 Verilator 硬件仿真工具链。我在学习如何像一个工程师一样，在逻辑的严密性与物理的限制（性能、功耗、面积）之间寻找平衡。</p>
         <p>读书进度追踪：<a href="/posts/2026-05-19-reading-tracker/">读书进度看板</a></p>
       </section>
 
@@ -38,22 +38,22 @@ import Comments from '../components/Comments.astro';
         <h2><span>03</span>我正在构建什么</h2>
         <p>在这个阶段，我的"施工现场"主要有两个：</p>
         <ul>
-          <li><strong>属于自己的 RISC-V 处理器核心：</strong>依托"一生一芯 (ysyx)"计划，我已经用 C 语言手搓完了底层的指令集模拟器，目前正在学习从Verilog RTL代码的功能仿真、逻辑综合到物理设计的全流程。</li>
-          <li><strong>智能体 (AI Agent) 环境：</strong>一台树莓派 5 是我的物理副武器。我正在上面部署和调优 OpenClaw和Hermes。</li>
+          <li><strong>处理器与数字硬件：</strong>依托“一生一芯”、FPGA 和课程项目，持续建立从指令集、数据通路到 RTL、仿真和硬件验证的理解。</li>
+          <li><strong>个人 AI 助手 Autumn：</strong>一个跨树莓派、Windows 和移动设备运行的个人 AI 助手系统，尝试把对话、工具、文件和任务组织成一个统一入口。</li>
         </ul>
       </section>
 
       <section id="why">
         <h2><span>04</span>我为什么写这个博客</h2>
         <p>底层硬件和架构的学习曲线极其陡峭，且充满了 Bug和"跑不通的仿真"。</p>
-        <p>建立这个博客（基于 Astro + Cloudflare），首先是为了给自己外挂一个"记忆硬盘"，作为纯粹的 Debug 日志和踩坑记录；其次，我想把在这个过程中那些突然"顿悟"的瞬间记录下来。我还会在这里放一些随笔和通识基础的笔记。</p>
+        <p>建立这个博客，首先是为了给自己外挂一个"记忆硬盘"，作为长期的 Debug 日志和踩坑记录；其次，我想把在这个过程中那些突然"顿悟"的瞬间记录下来。我还会在这里放一些随笔和通识基础的笔记。</p>
       </section>
 
       <section id="direction">
         <h2><span>05</span>我的长期方向</h2>
-        <p>成为一名数字 IC 架构师。</p>
+        <p>长期关注处理器、计算机体系结构、数字 IC 与高效计算硬件。</p>
         <p>面对现在快速迭代的各种 AI 算法和顶层框架，我深知自己目前的算力和精力无法全盘学习。因此，我选择先潜心扎根在"地下一层"。</p>
-        <p>我对AI 加速器的底层硬件实现充满了好奇。我正在努力夯实自己的体系结构基础，希望未来能有机会去深入研究如何更高效地完成底层的算术运算和数据搬运。路还很长，目前先从写好每一行 Verilog 开始。</p>
+        <p>我对 AI 加速器的底层硬件实现充满了好奇。它也是我眼中体系结构、数字硬件与 AI 真正交汇的地方。我正在努力夯实自己的体系结构基础，希望未来能有机会去深入研究如何更高效地完成底层的算术运算和数据搬运。路还很长，目前先从写好每一行 Verilog 开始。</p>
       </section>
 
       <section id="contact" class="contact">
@@ -61,7 +61,7 @@ import Comments from '../components/Comments.astro';
           <h2><span>06</span>找到我</h2>
           <span class="contact-kicker">Elsewhere on the web</span>
         </div>
-        <p>如果你也在死磕一生一芯，或者对体系结构和本地 AI 折腾感兴趣，欢迎随时找我交流：</p>
+        <p>如果你也在折腾处理器、数字硬件、Agent，或者只是对这些东西感兴趣，欢迎来聊：</p>
 
         <div class="contact-links">
           <a class="contact-link" href="https://github.com/helloworld-dlx" target="_blank" rel="noopener">
@@ -114,7 +114,7 @@ import Comments from '../components/Comments.astro';
   }
 
   .about-mark {
-    width: 3.5rem;
+    width: 3.8rem;
     height: 3.5rem;
     display: grid;
     place-items: center;
@@ -122,7 +122,10 @@ import Comments from '../components/Comments.astro';
     border-radius: 0.85rem;
     background: var(--color-accent-soft);
     color: var(--color-accent-strong);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
     font-weight: 700;
+    letter-spacing: 0.02em;
   }
 
   .about-nav a {

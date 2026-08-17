@@ -7,11 +7,11 @@ const allPosts = await getCollection('posts');
 const posts = allPosts.filter(post => post.data.section === 'mind' && !post.data.draft);
 ---
 
-<BaseLayout title="随想录" description="读书、技术哲学、学习方法与个人思考">
+<BaseLayout title="随想录" description="读书、学习方法，以及一些日常思考">
   <PostIndex
     posts={posts}
     title="随想录"
     kicker="Mind"
-    description="读书、技术哲学、学习方法与个人思考。"
+    description="读书、学习方法，以及一些日常思考。"
   />
 </BaseLayout>

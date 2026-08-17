@@ -1,6 +1,6 @@
 ---
 name: blog-manager
-description: "Manage the ykernel Astro blog: create Markdown drafts, find/edit/pin/feature posts, publish safely, update portfolio/changelog, and guard Git pushes."
+description: "Manage the ykernel Astro blog: create Markdown drafts, find/edit/pin/feature posts, maintain Portfolio and reader-facing Changelog, publish safely, and guard Git pushes."
 compatibility: OpenClaw, Codex, OpenCode
 ---
 
@@ -68,8 +68,27 @@ Publishing does not authorize a Git commit or push.
 
 - Only publish real projects and evidence.
 - Do not invent status, metrics, awards, completion or papers.
-- Private projects use minimum public disclosure.
-- Private projects use minimum public disclosure; change fixed Portfolio copy only with explicit user approval.
+- A project does not need a GitHub repository if real screenshots, reports or other evidence exist.
+- Do not expose YSYX / 一生一芯 code repository links on the blog.
+- Autumn may use its public name and high-level description; do not expose its repository/source unless explicitly approved.
+- MajorPath may use its public-interest major-exploration positioning; do not expose its GitHub link until explicitly approved.
+- Change fixed Portfolio copy only with explicit user approval.
+
+
+### Changelog
+
+Treat Changelog as a reader-facing history of meaningful site evolution, **not** as a Git log.
+
+Record only meaningful, user-visible changes such as:
+
+- site-wide UI / navigation / information-architecture changes;
+- important content-system or Portfolio structure changes;
+- deployment/domain/comment-system changes;
+- bugs that materially affected access, reading, build or major functionality.
+
+Do **not** automatically log routine post publishing, drafts, pin/feature toggles, tags, metadata, typos, minor copy edits, normal dependency updates, or internal refactors.
+
+If a completed task is clearly changelog-worthy, you may ask once whether the user wants it recorded. Write it only after explicit approval. Preserve historical entries as historical context; do not rename old OpenClaw/Hermes-era entries retroactively.
 
 ### Git write
 

@@ -7,7 +7,7 @@ const year = new Date().getFullYear();
     <p class="footer-text">
       <span>&copy; {year} dlx</span>
       <span class="sep">·</span>
-      <span>记录与思考</span>
+      <span>ykernel.xyz</span>
       <span class="sep">·</span>
       <a href="/changelog" class="footer-link">更新日志</a>
     </p>
@@ -15,33 +15,9 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  footer {
-    border-top: 1px solid var(--color-border);
-    padding: 1.25rem 0;
-    margin-top: 3rem;
-  }
-
-  .footer-text {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    flex-wrap: wrap;
-  }
-
-  .sep {
-    opacity: 0.4;
-  }
-
-  .footer-link {
-    color: var(--color-text-muted);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-
-  .footer-link:hover {
-    color: var(--color-accent);
-    text-decoration: none;
-  }
+  footer { border-top: 1px solid var(--color-border); padding: 1.25rem 0; margin-top: 3rem; }
+  .footer-text { display: flex; align-items: center; gap: 0.5rem; margin: 0; color: var(--color-text-muted); font-size: 0.8rem; flex-wrap: wrap; }
+  .sep { opacity: 0.35; }
+  .footer-link { color: var(--color-accent-strong); font-weight: 600; text-decoration: none; transition: color 0.15s; }
+  .footer-link:hover { color: var(--color-accent); text-decoration: none; }
 </style>

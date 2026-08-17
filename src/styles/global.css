@@ -248,6 +248,25 @@ article p {
   margin-bottom: 0.95rem;
 }
 
+/* Inline prose links: keep the Slate Blue palette, but make links clearly discoverable. */
+article p a:not([class]),
+article li a:not([class]) {
+  color: var(--color-accent-strong);
+  font-weight: 550;
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 62%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color 0.15s, background-color 0.15s, text-decoration-color 0.15s;
+}
+
+article p a:not([class]):hover,
+article li a:not([class]):hover {
+  color: var(--color-accent-hover);
+  background: color-mix(in srgb, var(--color-accent-soft) 72%, transparent);
+  text-decoration-color: var(--color-accent-hover);
+}
+
 article ul,
 article ol {
   margin-bottom: 0.95rem;
