@@ -1,0 +1,199 @@
+---
+const slides = [
+  '2025—2026学年个人总结答辩，集成电路设计与集成系统专业',
+  '学习与竞赛：学年加权平均分85.72，CET-4 649，CET-6 595，以及竞赛经历',
+  '专业探索与兴趣形成：数字电路与FPGA、编程与技术学习、专业方向探索',
+  '校园生活与未来计划',
+  '谢谢观看',
+];
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#182331" />
+    <title>个人总结答辩</title>
+    {slides.map((_, i) => <link rel="preload" as="image" href={`/slides/slide-${i + 1}.png`} />)}
+  </head>
+  <body>
+    <main class="player" aria-label="个人总结答辩幻灯片">
+      <div class="stage">
+        {slides.map((description, i) => (
+          <section class="slide" hidden={i !== 0} aria-label={`第 ${i + 1} 页：${description}`}>
+            <img src={`/slides/slide-${i + 1}.png`} width="2880" height="1620" alt={description} loading="eager" draggable="false" />
+            {i === 0 && <span id="presenter-name" aria-label="姓名">________</span>}
+          </section>
+        ))}
+        <output class="counter" aria-live="polite" aria-label="当前页码">1 / 5</output>
+      </div>
+      <nav class="controls" aria-label="播放控制">
+        <button id="previous" aria-label="上一页">←</button>
+        <button id="next" aria-label="下一页">→</button>
+        <button id="edit-name">姓名 N</button>
+        <button id="fullscreen">全屏 F</button>
+      </nav>
+      <p class="status" role="status"></p>
+    </main>
+    <dialog aria-labelledby="name-title">
+      <form>
+        <label id="name-title" for="name-input">设置姓名</label>
+        <input id="name-input" type="text" maxlength="20" autocomplete="off" spellcheck="false" />
+        <small>仅保存在当前标签页。Shift+N 可清除。</small>
+        <div class="dialog-buttons">
+          <button type="button" id="clear-name">清除</button>
+          <button type="button" id="cancel-name">取消</button>
+          <button type="submit">确定</button>
+        </div>
+      </form>
+    </dialog>
+    <script>
+      const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
+      const stage = document.querySelector<HTMLElement>('.stage')!;
+      const counter = document.querySelector('output')!;
+      const controls = document.querySelector<HTMLElement>('.controls')!;
+      const status = document.querySelector<HTMLElement>('.status')!;
+      const dialog = document.querySelector('dialog')!;
+      const input = document.querySelector<HTMLInputElement>('#name-input')!;
+      const name = document.querySelector<HTMLElement>('#presenter-name')!;
+      const storageKey = 'slides-presenter-name';
+      let presenter = '';
+      let index = 0;
+      let controlsTimer: ReturnType<typeof setTimeout>;
+      let statusTimer: ReturnType<typeof setTimeout>;
+
+      function notify(message: string) {
+        status.textContent = message;
+        clearTimeout(statusTimer);
+        statusTimer = setTimeout(() => { status.textContent = ''; }, 4000);
+      }
+      function renderName() {
+        name.textContent = presenter || '________';
+      }
+      function saveName(value: string) {
+        presenter = value.trim();
+        renderName();
+        try {
+          if (presenter) sessionStorage.setItem(storageKey, presenter);
+          else sessionStorage.removeItem(storageKey);
+        } catch {
+          notify('浏览器禁用了标签页存储；姓名将在刷新后清除。');
+        }
+      }
+      try { presenter = sessionStorage.getItem(storageKey) || ''; } catch {
+        // Storage can be disabled; slide playback must still work.
+      }
+      renderName();
+      function revealControls() {
+        controls.classList.add('visible');
+        clearTimeout(controlsTimer);
+        controlsTimer = setTimeout(() => controls.classList.remove('visible'), 2500);
+      }
+      function show(next: number, updateHash = true) {
+        index = Math.max(0, Math.min(slides.length - 1, next));
+        slides.forEach((slide, i) => { slide.hidden = i !== index; });
+        counter.textContent = `${index + 1} / ${slides.length}`;
+        if (updateHash) history.replaceState(null, '', `#${index + 1}`);
+      }
+      function pageFromHash() {
+        return /^#[1-5]$/.test(location.hash) ? Number(location.hash.slice(1)) - 1 : 0;
+      }
+      function openName() {
+        input.value = presenter;
+        dialog.showModal();
+        input.focus();
+        input.select();
+      }
+      async function fullscreen() {
+        try {
+          if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+        } catch {
+          notify('未能进入全屏，请使用浏览器 F11。');
+        }
+      }
+      show(pageFromHash(), false);
+      addEventListener('hashchange', () => show(pageFromHash(), false));
+      addEventListener('pointermove', revealControls, { passive: true });
+      addEventListener('keydown', event => {
+        if (dialog.open || event.ctrlKey || event.metaKey || event.altKey) return;
+        switch (event.key) {
+          case 'ArrowRight': case ' ': case 'PageDown': event.preventDefault(); show(index + 1); break;
+          case 'ArrowLeft': case 'PageUp': event.preventDefault(); show(index - 1); break;
+          case 'Home': event.preventDefault(); show(0); break;
+          case 'End': event.preventDefault(); show(4); break;
+          case 'n': case 'N': event.preventDefault(); if (event.shiftKey) { saveName(''); input.value = ''; } else openName(); break;
+          case 'f': case 'F': event.preventDefault(); void fullscreen(); break;
+          default: if (/^[1-5]$/.test(event.key)) show(Number(event.key) - 1);
+        }
+      });
+      document.querySelector('#previous')!.addEventListener('click', () => show(index - 1));
+      document.querySelector('#next')!.addEventListener('click', () => show(index + 1));
+      document.querySelector('#edit-name')!.addEventListener('click', openName);
+      document.querySelector('#fullscreen')!.addEventListener('click', fullscreen);
+      document.querySelector('form')!.addEventListener('submit', event => {
+        event.preventDefault();
+        saveName(input.value);
+        dialog.close();
+      });
+      document.querySelector('#cancel-name')!.addEventListener('click', () => dialog.close());
+      document.querySelector('#clear-name')!.addEventListener('click', () => { saveName(''); dialog.close(); });
+      dialog.addEventListener('close', () => { input.value = ''; });
+
+      // One pointer gesture produces at most one page change (no swipe + click double turn).
+      let gesture: { id: number; x: number; y: number } | null = null;
+      stage.addEventListener('pointerdown', event => {
+        if (dialog.open || !event.isPrimary || event.button !== 0) return;
+        gesture = { id: event.pointerId, x: event.clientX, y: event.clientY };
+        stage.setPointerCapture(event.pointerId);
+        revealControls();
+      });
+      stage.addEventListener('pointercancel', () => { gesture = null; });
+      stage.addEventListener('pointerup', event => {
+        if (!gesture || event.pointerId !== gesture.id) return;
+        const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
+        gesture = null;
+        if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+          show(index + (dx < 0 ? 1 : -1));
+        } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+          const bounds = stage.getBoundingClientRect();
+          const x = (event.clientX - bounds.left) / bounds.width;
+          if (x <= 0.25) show(index - 1);
+          else if (x >= 0.75) show(index + 1);
+        }
+      });
+      for (const image of document.querySelectorAll('img')) {
+        image.addEventListener('error', () => notify('幻灯片图片未能加载，请连接网络后刷新。'));
+      }
+      revealControls();
+    </script>
+  </body>
+</html>
+<style>
+  :global(html), :global(body) { margin: 0; width: 100%; height: 100%; background: #182331; }
+  :global(body) { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif; overflow: hidden; }
+  .player { height: 100vh; height: 100dvh; display: grid; place-items: center; }
+  .stage { position: relative; width: min(100vw, calc(100vh * 16 / 9)); width: min(100vw, calc(100dvh * 16 / 9)); aspect-ratio: 16 / 9; container-type: inline-size; background: white; touch-action: pan-y; user-select: none; }
+  .slide { position: absolute; inset: 0; }
+  .slide[hidden] { display: none; }
+  img { display: block; width: 100%; height: 100%; }
+  #presenter-name { position: absolute; left: 13%; top: 77.1%; width: 25%; overflow: hidden; white-space: nowrap; color: #26364f; font-size: 1.85cqw; line-height: 1.3; }
+  .counter { position: absolute; bottom: 1%; right: 1.4%; font: 400 clamp(8px, .85cqw, 18px) Arial, sans-serif; color: #61728b; pointer-events: none; }
+  .controls { position: fixed; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); display: flex; gap: 4px; padding: 4px; border-radius: 7px; background: #182331db; transform: translateX(-50%); opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .controls.visible, .controls:focus-within, .controls:hover { opacity: .88; pointer-events: auto; }
+  button { border: 0; border-radius: 4px; padding: 8px 12px; font: inherit; cursor: pointer; }
+  .controls button { background: transparent; color: white; font-size: 12px; }
+  .controls button:hover, .controls button:focus-visible { background: #ffffff20; }
+  .status { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); margin: 0; padding: 8px 12px; border-radius: 4px; background: #182331ee; color: white; font-size: 14px; }
+  .status:empty { display: none; }
+  dialog { box-sizing: border-box; width: min(360px, calc(100vw - 32px)); padding: 24px; border: 0; border-radius: 8px; color: #26364f; }
+  dialog::backdrop { background: #101b2a80; }
+  label { display: block; margin-bottom: 12px; font-weight: bold; }
+  input { box-sizing: border-box; width: 100%; padding: 10px; border: 1px solid #a9bbcd; border-radius: 4px; font: inherit; }
+  small { display: block; margin-top: 10px; color: #61728b; font-size: 12px; }
+  .dialog-buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+  .dialog-buttons button { background: #edf2f8; color: #26364f; font-size: 14px; }
+  button[type="submit"] { background: #0d226a; color: white; }
+  @media (prefers-reduced-motion: reduce) { .controls { transition: none; } }
+</style>

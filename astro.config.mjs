@@ -8,7 +8,9 @@ export default defineConfig({
   site: 'https://ykernel.xyz/',
   output: 'static',
   integrations: [
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.endsWith('/slides/'),
+    }),
     mermaid({
       theme: 'neutral',
     }),
