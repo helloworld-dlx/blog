@@ -1,6 +1,6 @@
 ---
 const slides = [
-  '2025—2026学年个人总结答辩，集成电路设计与集成系统专业',
+  '2025—2026学年个人总结答辩，集成25-2班',
   '学习与竞赛：学年加权平均分85.72，CET-4 649，CET-6 595，以及竞赛经历',
   '专业探索与兴趣形成：数字电路与FPGA、编程与技术学习、专业方向探索',
   '校园生活与未来计划',
@@ -23,8 +23,7 @@ const slides = [
       <div class="stage">
         {slides.map((description, i) => (
           <section class="slide" hidden={i !== 0} aria-label={`第 ${i + 1} 页：${description}`}>
-            <img src={`/slides/slide-${i + 1}.png`} width="2880" height="1620" alt={description} loading="eager" draggable="false" />
-            {i === 0 && <span id="presenter-name" aria-label="姓名">________</span>}
+            <img src={`/slides/slide-${i + 1}.png`} width="1920" height="1080" alt={description} loading="eager" draggable="false" />
           </section>
         ))}
         <output class="counter" aria-live="polite" aria-label="当前页码">1 / 5</output>
@@ -32,34 +31,16 @@ const slides = [
       <nav class="controls" aria-label="播放控制">
         <button id="previous" aria-label="上一页">←</button>
         <button id="next" aria-label="下一页">→</button>
-        <button id="edit-name">姓名 N</button>
         <button id="fullscreen">全屏 F</button>
       </nav>
       <p class="status" role="status"></p>
     </main>
-    <dialog aria-labelledby="name-title">
-      <form>
-        <label id="name-title" for="name-input">设置姓名</label>
-        <input id="name-input" type="text" maxlength="20" autocomplete="off" spellcheck="false" />
-        <small>仅保存在当前标签页。Shift+N 可清除。</small>
-        <div class="dialog-buttons">
-          <button type="button" id="clear-name">清除</button>
-          <button type="button" id="cancel-name">取消</button>
-          <button type="submit">确定</button>
-        </div>
-      </form>
-    </dialog>
     <script>
       const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
       const stage = document.querySelector<HTMLElement>('.stage')!;
       const counter = document.querySelector('output')!;
       const controls = document.querySelector<HTMLElement>('.controls')!;
       const status = document.querySelector<HTMLElement>('.status')!;
-      const dialog = document.querySelector('dialog')!;
-      const input = document.querySelector<HTMLInputElement>('#name-input')!;
-      const name = document.querySelector<HTMLElement>('#presenter-name')!;
-      const storageKey = 'slides-presenter-name';
-      let presenter = '';
       let index = 0;
       let controlsTimer: ReturnType<typeof setTimeout>;
       let statusTimer: ReturnType<typeof setTimeout>;
@@ -69,23 +50,6 @@ const slides = [
         clearTimeout(statusTimer);
         statusTimer = setTimeout(() => { status.textContent = ''; }, 4000);
       }
-      function renderName() {
-        name.textContent = presenter || '________';
-      }
-      function saveName(value: string) {
-        presenter = value.trim();
-        renderName();
-        try {
-          if (presenter) sessionStorage.setItem(storageKey, presenter);
-          else sessionStorage.removeItem(storageKey);
-        } catch {
-          notify('浏览器禁用了标签页存储；姓名将在刷新后清除。');
-        }
-      }
-      try { presenter = sessionStorage.getItem(storageKey) || ''; } catch {
-        // Storage can be disabled; slide playback must still work.
-      }
-      renderName();
       function revealControls() {
         controls.classList.add('visible');
         clearTimeout(controlsTimer);
@@ -100,12 +64,6 @@ const slides = [
       function pageFromHash() {
         return /^#[1-5]$/.test(location.hash) ? Number(location.hash.slice(1)) - 1 : 0;
       }
-      function openName() {
-        input.value = presenter;
-        dialog.showModal();
-        input.focus();
-        input.select();
-      }
       async function fullscreen() {
         try {
           if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
@@ -117,34 +75,24 @@ const slides = [
       addEventListener('hashchange', () => show(pageFromHash(), false));
       addEventListener('pointermove', revealControls, { passive: true });
       addEventListener('keydown', event => {
-        if (dialog.open || event.ctrlKey || event.metaKey || event.altKey) return;
+        if (event.ctrlKey || event.metaKey || event.altKey) return;
         switch (event.key) {
           case 'ArrowRight': case ' ': case 'PageDown': event.preventDefault(); show(index + 1); break;
           case 'ArrowLeft': case 'PageUp': event.preventDefault(); show(index - 1); break;
           case 'Home': event.preventDefault(); show(0); break;
           case 'End': event.preventDefault(); show(4); break;
-          case 'n': case 'N': event.preventDefault(); if (event.shiftKey) { saveName(''); input.value = ''; } else openName(); break;
           case 'f': case 'F': event.preventDefault(); void fullscreen(); break;
           default: if (/^[1-5]$/.test(event.key)) show(Number(event.key) - 1);
         }
       });
       document.querySelector('#previous')!.addEventListener('click', () => show(index - 1));
       document.querySelector('#next')!.addEventListener('click', () => show(index + 1));
-      document.querySelector('#edit-name')!.addEventListener('click', openName);
       document.querySelector('#fullscreen')!.addEventListener('click', fullscreen);
-      document.querySelector('form')!.addEventListener('submit', event => {
-        event.preventDefault();
-        saveName(input.value);
-        dialog.close();
-      });
-      document.querySelector('#cancel-name')!.addEventListener('click', () => dialog.close());
-      document.querySelector('#clear-name')!.addEventListener('click', () => { saveName(''); dialog.close(); });
-      dialog.addEventListener('close', () => { input.value = ''; });
 
       // One pointer gesture produces at most one page change (no swipe + click double turn).
       let gesture: { id: number; x: number; y: number } | null = null;
       stage.addEventListener('pointerdown', event => {
-        if (dialog.open || !event.isPrimary || event.button !== 0) return;
+        if (!event.isPrimary || event.button !== 0) return;
         gesture = { id: event.pointerId, x: event.clientX, y: event.clientY };
         stage.setPointerCapture(event.pointerId);
         revealControls();
@@ -178,7 +126,6 @@ const slides = [
   .slide { position: absolute; inset: 0; }
   .slide[hidden] { display: none; }
   img { display: block; width: 100%; height: 100%; }
-  #presenter-name { position: absolute; left: 13%; top: 77.1%; width: 25%; overflow: hidden; white-space: nowrap; color: #26364f; font-size: 1.85cqw; line-height: 1.3; }
   .counter { position: absolute; bottom: 1%; right: 1.4%; font: 400 clamp(8px, .85cqw, 18px) Arial, sans-serif; color: #61728b; pointer-events: none; }
   .controls { position: fixed; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); display: flex; gap: 4px; padding: 4px; border-radius: 7px; background: #182331db; transform: translateX(-50%); opacity: 0; pointer-events: none; transition: opacity .2s; }
   .controls.visible, .controls:focus-within, .controls:hover { opacity: .88; pointer-events: auto; }
@@ -187,13 +134,5 @@ const slides = [
   .controls button:hover, .controls button:focus-visible { background: #ffffff20; }
   .status { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); margin: 0; padding: 8px 12px; border-radius: 4px; background: #182331ee; color: white; font-size: 14px; }
   .status:empty { display: none; }
-  dialog { box-sizing: border-box; width: min(360px, calc(100vw - 32px)); padding: 24px; border: 0; border-radius: 8px; color: #26364f; }
-  dialog::backdrop { background: #101b2a80; }
-  label { display: block; margin-bottom: 12px; font-weight: bold; }
-  input { box-sizing: border-box; width: 100%; padding: 10px; border: 1px solid #a9bbcd; border-radius: 4px; font: inherit; }
-  small { display: block; margin-top: 10px; color: #61728b; font-size: 12px; }
-  .dialog-buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
-  .dialog-buttons button { background: #edf2f8; color: #26364f; font-size: 14px; }
-  button[type="submit"] { background: #0d226a; color: white; }
   @media (prefers-reduced-motion: reduce) { .controls { transition: none; } }
 </style>
