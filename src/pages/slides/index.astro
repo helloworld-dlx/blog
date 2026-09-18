@@ -1,12 +1,3 @@
----
-const slides = [
-  '2025—2026学年个人总结答辩，集成25-2班',
-  '学习与竞赛：学年加权平均分85.72，CET-4 649，CET-6 595，以及竞赛经历',
-  '专业探索与兴趣形成：数字电路与FPGA、编程与技术学习、专业方向探索',
-  '校园生活与未来计划',
-  '谢谢观看',
-];
----
 <!doctype html>
 <html lang="zh-CN">
   <head>
@@ -14,125 +5,144 @@ const slides = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="referrer" content="no-referrer" />
-    <meta name="theme-color" content="#182331" />
-    <title>个人总结答辩</title>
-    {slides.map((_, i) => <link rel="preload" as="image" href={`/slides/slide-${i + 1}.png`} />)}
+    <meta name="theme-color" content="#101b2a" />
+    <title>这里没有 PPT</title>
   </head>
   <body>
-    <main class="player" aria-label="个人总结答辩幻灯片">
-      <div class="stage">
-        {slides.map((description, i) => (
-          <section class="slide" hidden={i !== 0} aria-label={`第 ${i + 1} 页：${description}`}>
-            <img src={`/slides/slide-${i + 1}.png`} width="1920" height="1080" alt={description} loading="eager" draggable="false" />
-          </section>
-        ))}
-        <output class="counter" aria-live="polite" aria-label="当前页码">1 / 5</output>
-      </div>
-      <nav class="controls" aria-label="播放控制">
-        <button id="previous" aria-label="上一页">←</button>
-        <button id="next" aria-label="下一页">→</button>
-        <button id="fullscreen">全屏 F</button>
-      </nav>
-      <p class="status" role="status"></p>
+    <main>
+      <div class="orbit orbit-one" aria-hidden="true"></div>
+      <div class="orbit orbit-two" aria-hidden="true"></div>
+
+      <section class="card" aria-labelledby="empty-title">
+        <span class="icon" aria-hidden="true">📭</span>
+        <p class="eyebrow">SLIDES HAVE LEFT THE CHAT</p>
+        <h1 id="empty-title">这里没有 PPT 嘿嘿</h1>
+        <p class="note">答辩结束，幻灯片先下班啦。</p>
+        <button type="button">我不信</button>
+      </section>
+
+      <p class="footnote">你什么也没看到&nbsp; 👀</p>
     </main>
+
     <script>
-      const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
-      const stage = document.querySelector<HTMLElement>('.stage')!;
-      const counter = document.querySelector('output')!;
-      const controls = document.querySelector<HTMLElement>('.controls')!;
-      const status = document.querySelector<HTMLElement>('.status')!;
-      let index = 0;
-      let controlsTimer: ReturnType<typeof setTimeout>;
-      let statusTimer: ReturnType<typeof setTimeout>;
+      const title = document.querySelector('h1')!;
+      const note = document.querySelector<HTMLElement>('.note')!;
+      const button = document.querySelector('button')!;
+      let revealed = false;
 
-      function notify(message: string) {
-        status.textContent = message;
-        clearTimeout(statusTimer);
-        statusTimer = setTimeout(() => { status.textContent = ''; }, 4000);
-      }
-      function revealControls() {
-        controls.classList.add('visible');
-        clearTimeout(controlsTimer);
-        controlsTimer = setTimeout(() => controls.classList.remove('visible'), 2500);
-      }
-      function show(next: number, updateHash = true) {
-        index = Math.max(0, Math.min(slides.length - 1, next));
-        slides.forEach((slide, i) => { slide.hidden = i !== index; });
-        counter.textContent = `${index + 1} / ${slides.length}`;
-        if (updateHash) history.replaceState(null, '', `#${index + 1}`);
-      }
-      function pageFromHash() {
-        return /^#[1-5]$/.test(location.hash) ? Number(location.hash.slice(1)) - 1 : 0;
-      }
-      async function fullscreen() {
-        try {
-          if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
-        } catch {
-          notify('未能进入全屏，请使用浏览器 F11。');
-        }
-      }
-      show(pageFromHash(), false);
-      addEventListener('hashchange', () => show(pageFromHash(), false));
-      addEventListener('pointermove', revealControls, { passive: true });
-      addEventListener('keydown', event => {
-        if (event.ctrlKey || event.metaKey || event.altKey) return;
-        switch (event.key) {
-          case 'ArrowRight': case ' ': case 'PageDown': event.preventDefault(); show(index + 1); break;
-          case 'ArrowLeft': case 'PageUp': event.preventDefault(); show(index - 1); break;
-          case 'Home': event.preventDefault(); show(0); break;
-          case 'End': event.preventDefault(); show(4); break;
-          case 'f': case 'F': event.preventDefault(); void fullscreen(); break;
-          default: if (/^[1-5]$/.test(event.key)) show(Number(event.key) - 1);
-        }
+      button.addEventListener('click', () => {
+        revealed = !revealed;
+        title.textContent = revealed ? '真的没有啦 👀' : '这里没有 PPT 嘿嘿';
+        note.textContent = revealed ? '再点也不会凭空变出来。' : '答辩结束，幻灯片先下班啦。';
+        button.textContent = revealed ? '好吧好吧' : '我不信';
       });
-      document.querySelector('#previous')!.addEventListener('click', () => show(index - 1));
-      document.querySelector('#next')!.addEventListener('click', () => show(index + 1));
-      document.querySelector('#fullscreen')!.addEventListener('click', fullscreen);
-
-      // One pointer gesture produces at most one page change (no swipe + click double turn).
-      let gesture: { id: number; x: number; y: number } | null = null;
-      stage.addEventListener('pointerdown', event => {
-        if (!event.isPrimary || event.button !== 0) return;
-        gesture = { id: event.pointerId, x: event.clientX, y: event.clientY };
-        stage.setPointerCapture(event.pointerId);
-        revealControls();
-      });
-      stage.addEventListener('pointercancel', () => { gesture = null; });
-      stage.addEventListener('pointerup', event => {
-        if (!gesture || event.pointerId !== gesture.id) return;
-        const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
-        gesture = null;
-        if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-          show(index + (dx < 0 ? 1 : -1));
-        } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
-          const bounds = stage.getBoundingClientRect();
-          const x = (event.clientX - bounds.left) / bounds.width;
-          if (x <= 0.25) show(index - 1);
-          else if (x >= 0.75) show(index + 1);
-        }
-      });
-      for (const image of document.querySelectorAll('img')) {
-        image.addEventListener('error', () => notify('幻灯片图片未能加载，请连接网络后刷新。'));
-      }
-      revealControls();
     </script>
   </body>
 </html>
+
 <style>
-  :global(html), :global(body) { margin: 0; width: 100%; height: 100%; background: #182331; }
-  :global(body) { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif; overflow: hidden; }
-  .player { height: 100vh; height: 100dvh; display: grid; place-items: center; }
-  .stage { position: relative; width: min(100vw, calc(100vh * 16 / 9)); width: min(100vw, calc(100dvh * 16 / 9)); aspect-ratio: 16 / 9; container-type: inline-size; background: white; touch-action: pan-y; user-select: none; }
-  .slide { position: absolute; inset: 0; }
-  .slide[hidden] { display: none; }
-  img { display: block; width: 100%; height: 100%; }
-  .counter { position: absolute; bottom: 1%; right: 1.4%; font: 400 clamp(8px, .85cqw, 18px) Arial, sans-serif; color: #61728b; pointer-events: none; }
-  .controls { position: fixed; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); display: flex; gap: 4px; padding: 4px; border-radius: 7px; background: #182331db; transform: translateX(-50%); opacity: 0; pointer-events: none; transition: opacity .2s; }
-  .controls.visible, .controls:focus-within, .controls:hover { opacity: .88; pointer-events: auto; }
-  button { border: 0; border-radius: 4px; padding: 8px 12px; font: inherit; cursor: pointer; }
-  .controls button { background: transparent; color: white; font-size: 12px; }
-  .controls button:hover, .controls button:focus-visible { background: #ffffff20; }
-  .status { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); margin: 0; padding: 8px 12px; border-radius: 4px; background: #182331ee; color: white; font-size: 14px; }
-  .status:empty { display: none; }
-  @media (prefers-reduced-motion: reduce) { .controls { transition: none; } }
+  :global(*) { box-sizing: border-box; }
+  :global(html), :global(body) { margin: 0; min-height: 100%; }
+  :global(body) {
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+    color: #f4f8ff;
+    background:
+      radial-gradient(circle at 20% 20%, #224a78 0, transparent 34%),
+      radial-gradient(circle at 80% 75%, #173c65 0, transparent 30%),
+      #101b2a;
+    overflow: hidden;
+  }
+
+  main {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    isolation: isolate;
+  }
+
+  .card {
+    width: min(700px, 100%);
+    padding: clamp(36px, 7vw, 72px) clamp(24px, 7vw, 64px);
+    border: 1px solid #ffffff24;
+    border-radius: 28px;
+    text-align: center;
+    background: #ffffff0d;
+    box-shadow: 0 28px 80px #00000040;
+    backdrop-filter: blur(12px);
+  }
+
+  .icon {
+    display: inline-block;
+    font-size: clamp(58px, 12vw, 92px);
+    filter: drop-shadow(0 12px 20px #00000035);
+    animation: bob 3s ease-in-out infinite;
+  }
+
+  .eyebrow {
+    margin: 22px 0 10px;
+    color: #8fc7ff;
+    font: 700 clamp(10px, 2.5vw, 13px) / 1.4 Arial, sans-serif;
+    letter-spacing: .18em;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(34px, 7vw, 56px);
+    line-height: 1.2;
+    letter-spacing: -.03em;
+  }
+
+  .note {
+    min-height: 1.6em;
+    margin: 22px 0 30px;
+    color: #bdcce0;
+    font-size: clamp(15px, 3vw, 18px);
+  }
+
+  button {
+    border: 1px solid #ffffff28;
+    border-radius: 999px;
+    padding: 11px 22px;
+    color: #f4f8ff;
+    background: #ffffff12;
+    font: 600 15px / 1.2 inherit;
+    cursor: pointer;
+    transition: transform .18s ease, background .18s ease;
+  }
+
+  button:hover { transform: translateY(-2px); background: #ffffff20; }
+  button:active { transform: translateY(0); }
+  button:focus-visible { outline: 3px solid #71b7ff; outline-offset: 4px; }
+
+  .orbit {
+    position: absolute;
+    z-index: -1;
+    border: 1px solid #8fc7ff2b;
+    border-radius: 50%;
+  }
+
+  .orbit-one { width: 46vmin; height: 46vmin; top: -18vmin; right: -10vmin; }
+  .orbit-two { width: 30vmin; height: 30vmin; bottom: -12vmin; left: -8vmin; }
+
+  .footnote {
+    position: fixed;
+    right: 18px;
+    bottom: 14px;
+    margin: 0;
+    color: #9db0c8;
+    font-size: 12px;
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-9px) rotate(2deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .icon { animation: none; }
+    button { transition: none; }
+  }
 </style>
